@@ -1,3 +1,13 @@
+/*
+Nama        : Cheeryl Aisyah Retnowibowo
+NPM         : 2206813706
+Kelas       : DDP2 - D
+Tanggal     : 20 Februari 2023
+
+Kode Asdos  : AYP
+Dosen       : Muhammad Hafizhuddin Hilman, S.Kom., M.Kom., Ph.D.
+*/
+
 package assignments.assignment1;
 
 import java.util.Scanner;
