@@ -14,12 +14,37 @@ import java.util.Scanner;
 
 public class NotaGenerator {
     private static final Scanner input = new Scanner(System.in);
-
+    
     /**
      * Method main, program utama kalian berjalan disini.
      */
     public static void main(String[] args) {
         // TODO: Implement interface menu utama
+        printMenu();
+        System.out.print("Pilihan : ");
+        int pilihan = input.nextInt();
+
+        if (pilihan == 1) {
+            System.out.println("Masukkan nama Anda: ");
+            input.nextLine();
+            String nama = input.nextLine();
+            nama = conversionNama(nama);
+            
+            System.out.println("Masukkan nomor handphone Anda: ");
+            String nomorHP = " ";
+            boolean program = true;
+            while (program) {
+                if (input.hasNextDouble()) {
+                    nomorHP = input.nextLine();
+                    program = false;
+                }
+                else {
+                    System.out.println("Nomor hp hanya menerima digit");
+                    nomorHP = input.nextLine();
+                }
+            }
+            generateId(nama, nomorHP);
+        }
     }
 
     /**
@@ -52,6 +77,25 @@ public class NotaGenerator {
      */
     public static String generateId(String nama, String nomorHP){
         // TODO: Implement generate ID sesuai soal.
+        String iDSementara = nama + "-" + nomorHP;
+        
+        int checkSum = 0;
+        for (int i = 0; i < iDSementara.length(); i++) {
+            if (Character.isLetter(iDSementara.charAt(i))) {
+                int nilaiHuruf = nama.charAt(i) - 'A'+1;
+                checkSum += nilaiHuruf;
+            }
+            else if (Character.isDigit(iDSementara.charAt(i))) {
+                String nomorHPString = Character.toString(iDSementara.charAt(i));
+                int nilaiNomorHP = Integer.parseInt(nomorHPString);
+                checkSum += nilaiNomorHP;
+            }
+            else {
+                checkSum += 7;
+            }
+        }
+        System.out.printf("ID Anda : %s-%02d", iDSementara, checkSum);
+
         return null;
     }
 
@@ -72,5 +116,14 @@ public class NotaGenerator {
     public static String generateNota(String id, String paket, int berat, String tanggalTerima){
         // TODO: Implement generate nota sesuai soal.
         return null;
+    }
+
+    public static String conversionNama(String nama) {
+        nama = nama.toUpperCase();
+            if (nama.contains(" ")){
+                String[] namaSplited = nama.split("\\s");
+                nama = namaSplited[0];
+            }
+        return nama;
     }
 }
