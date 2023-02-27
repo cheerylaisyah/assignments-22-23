@@ -17,11 +17,8 @@ import java.text.SimpleDateFormat;
 public class NotaGenerator {
     private static final Scanner input = new Scanner(System.in);
     
-    /**
-     * Method main, program utama kalian berjalan disini.
-     */
+    // Method main
     public static void main(String[] args) {
-        // TODO: Implement interface menu utama
         boolean program = true;
         while (program) {
             printMenu();
@@ -40,7 +37,7 @@ public class NotaGenerator {
             }
             else if (pilihan.equals("2")) {
                 String iDAnggota = generateId(inputNama(), inputNomorHP());
-                String tanggalTerima = inputTanggalTerima();
+                String tanggalTerima = inputTanggalTerima();                
                 String paketCuci = inputPaketCuci();
                 int beratCucian = inputBeratCucian();
                 generateNota(iDAnggota, paketCuci, beratCucian, tanggalTerima);
@@ -51,9 +48,7 @@ public class NotaGenerator {
         }
     }
 
-    /**
-     * Method untuk menampilkan menu di NotaGenerator.
-     */
+    // Method untuk menampilkan menu di NotaGenerator.
     private static void printMenu() {
         System.out.println("Selamat datang di NotaGenerator!");
         System.out.println("==============Menu==============");
@@ -62,9 +57,7 @@ public class NotaGenerator {
         System.out.println("[0] Exit");
     }
 
-    /**
-     * Method untuk menampilkan paket.
-     */
+    // Method untuk menampilkan paket.
     private static void showPaket() {
         System.out.println("+-------------Paket-------------+");
         System.out.println("| Express | 1 Hari | 12000 / Kg |");
@@ -73,14 +66,8 @@ public class NotaGenerator {
         System.out.println("+-------------------------------+");
     }
 
-    /**
-     * Method untuk membuat ID dari nama dan nomor handphone.
-     * Parameter dan return type dari method ini tidak boleh diganti agar tidak mengganggu testing
-     *
-     * @return String ID anggota dengan format [NAMADEPAN]-[nomorHP]-[2digitChecksum]
-     */
+    // Method untuk membuat ID dari nama dan nomor handphone.
     public static String generateId(String nama, String nomorHP){
-        // TODO: Implement generate ID sesuai soal.
         String iDSementara = nama + "-" + nomorHP;
 
         int checkSum = 0;
@@ -110,24 +97,11 @@ public class NotaGenerator {
         return iDAnggota;
     }
 
-    /**
-     *
-     * Method untuk membuat Nota.
-     * Parameter dan return type dari method ini tidak boleh diganti agar tidak mengganggu testing.
-     *
-     * @return string nota dengan format di bawah:
-     *         <p>ID    : [id]
-     *         <p>Paket : [paket]
-     *         <p>Harga :
-     *         <p>[berat] kg x [hargaPaketPerKg] = [totalHarga]
-     *         <p>Tanggal Terima  : [tanggalTerima]
-     *         <p>Tanggal Selesai : [tanggalTerima + LamaHariPaket]
-     */
-
+    // Method untuk membuat Nota.
     public static String generateNota(String id, String paket, int berat, String tanggalTerima){
-        // TODO: Implement generate nota sesuai soal.
         int biaya = 0;
         int durasi = 0;
+        String tanggalSelesai = "";
         if (paket.equals("express")) {
             biaya = 12000;
             durasi = 1;
@@ -140,17 +114,21 @@ public class NotaGenerator {
             biaya = 7000;
             durasi = 3;
         }
-
+        
         int biayaTotal = biaya * berat;
 
-        System.out.println("Nota Laundry");
-        System.out.println("ID    : " + id);
-        System.out.println("Paket : " + paket);
-        System.out.println("Harga :");
-        System.out.printf("%d kg x %d = %d%n", berat, biaya, biayaTotal);
-        System.out.println("Tanggal Terima  : " + tanggalTerima);
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            Calendar c = Calendar.getInstance();
+            c.setTime(sdf.parse(tanggalTerima));
+            c.add(Calendar.DATE, durasi);
+            tanggalSelesai = sdf.format(c.getTime());
+        }
+        catch (ParseException e) {
+        }
 
-        return null;
+        String printNota = printNota(id, paket, berat, biaya, biayaTotal, tanggalTerima, tanggalSelesai);
+        return printNota;
     }
 
     public static String conversionNama(String nama) {
@@ -187,17 +165,8 @@ public class NotaGenerator {
     }
 
     public static String inputTanggalTerima() {
-        SimpleDateFormat dateInput = new SimpleDateFormat("dd/MM/yyyy");
         System.out.println("Masukkan tanggal terima: ");
         String tanggalTerima = input.nextLine();
-        
-        try {
-            Date date = dateInput.parse(tanggalTerima);
-            System.out.println(new SimpleDateFormat("dd/MM/yyyy").format(date));
-        }
-        catch (ParseException e) {
-
-        }
         return tanggalTerima;
     }
 
@@ -247,5 +216,16 @@ public class NotaGenerator {
         }
         input.nextLine();
         return beratCucian;
+    }
+
+    public static String printNota(String id, String paket, int berat, int biaya, int biayaTotal, String tanggalTerima, String tanggalSelesai) {
+        System.out.println("Nota Laundry");
+        System.out.println("ID    : " + id);
+        System.out.println("Paket : " + paket);
+        System.out.println("Harga :");
+        System.out.printf("%d kg x %d = %d%n", berat, biaya, biayaTotal);
+        System.out.println("Tanggal Terima  : " + tanggalTerima);
+        System.out.println("Tanggal Selesai : " + tanggalSelesai);
+        return null;
     }
 }
