@@ -162,12 +162,13 @@ public class NotaGenerator {
         // menghitung tanggal selesai laundry sesuai durasi paket
         try {
             SimpleDateFormat formatTanggal = new SimpleDateFormat("dd/MM/yyyy");
-            Calendar c = Calendar.getInstance();
-            c.setTime(formatTanggal.parse(tanggalTerima));
-            c.add(Calendar.DATE, durasi);
-            tanggalSelesai = formatTanggal.format(c.getTime());
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(formatTanggal.parse(tanggalTerima));                          // ubah string ke ke form Date
+            
+            calendar.add(Calendar.DATE, durasi);                                           // menambahkan hari sesuai durasi paket
+            tanggalSelesai = formatTanggal.format(calendar.getTime());                     // set format tanggal selesai sesuai dengan ketentuan --> dd/MM/yyyy
         }
-        catch (ParseException e) {
+        catch (ParseException exception) {
         }
 
         // me-return nota pelanggan
@@ -289,3 +290,9 @@ public class NotaGenerator {
         return beratCucian;
     }
 }
+
+/*
+ * RESOURCE:
+ * GeeksforGeeks. (2021, October 8). Java SIMPLEDATEFORMAT: Set 1. 
+ *    Retrieved February 28, 2023, from https://www.geeksforgeeks.org/java-simpledateformat-set-1/.
+ */
