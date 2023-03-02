@@ -237,7 +237,6 @@ public class NotaGenerator {
         while (checkPaketCuci) {
             System.out.println("Masukkan paket laundry: ");
             paketCuci = input.nextLine();
-            // String paketCuciCheck = paketCuci.toLowerCase(); JAMAL APUS
 
             // conditions untuk validasi input user
             if (paketCuci.equalsIgnoreCase("express") || paketCuci.equalsIgnoreCase("fast")|| paketCuci.equalsIgnoreCase("reguler") ) {
