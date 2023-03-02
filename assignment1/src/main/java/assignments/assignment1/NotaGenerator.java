@@ -143,15 +143,15 @@ public class NotaGenerator {
         String tanggalSelesai = "";
 
         // conditions untuk menentukan biaya laundry dan durasi sesuai input user
-        if (paket.equals("express")) {
+        if (paket.equalsIgnoreCase("express")) {
             biaya = 12000;
             durasi = 1;
         }
-        else if (paket.equals("fast")) {
+        else if (paket.equalsIgnoreCase("fast")) {
             biaya = 10000;
             durasi = 2;
         }
-        else if (paket.equals("reguler")) {
+        else if (paket.equalsIgnoreCase("reguler")) {
             biaya = 7000;
             durasi = 3;
         }
@@ -198,21 +198,16 @@ public class NotaGenerator {
      */
     public static String checkNomorHP(String nomorHP) {
         boolean checkNomorHP = true;
-
+    
         // loop untuk memvalidasi setiap digit nomor HP 
         while (checkNomorHP) {
-            nomorHP = input.nextLine();
+            nomorHP = input.nextLine();     
             for (int i = 0; i < nomorHP.length(); i++) {
-                if (Character.isDigit(nomorHP.charAt(i))) {                         // jika nomor HP merupakan digit --> meminta input kembali
-                    if (Character.getNumericValue(nomorHP.charAt(i)) < 0) {         // jika digit nomor HP < 0  --> meminta input kembali
-                        System.out.println("Nomor hp hanya menerima digit");
-                        break;
-                    }
-                    else {
-                        checkNomorHP = false;
-                    }
+                if (Character.isDigit(nomorHP.charAt(i))) {  
+                    checkNomorHP = false;                                               // jika nomor HP merupakan digit 
                 }
-                else {                                                              // jika nomor HP bukan digit/angka --> meminta input kembali
+                else {                                                                 
+                    checkNomorHP = true;                                                // jika nomor HP bukan digit/angka --> meminta input kembali
                     System.out.println("Nomor hp hanya menerima digit");
                     break;
                 }
@@ -242,13 +237,13 @@ public class NotaGenerator {
         while (checkPaketCuci) {
             System.out.println("Masukkan paket laundry: ");
             paketCuci = input.nextLine();
-            String paketCuciCheck = paketCuci.toLowerCase();
+            // String paketCuciCheck = paketCuci.toLowerCase(); JAMAL APUS
 
             // conditions untuk validasi input user
-            if (paketCuciCheck.equals("express") || paketCuciCheck.equals("fast")|| paketCuciCheck.equals("reguler") ) {
+            if (paketCuci.equalsIgnoreCase("express") || paketCuci.equalsIgnoreCase("fast")|| paketCuci.equalsIgnoreCase("reguler") ) {
                 checkPaketCuci = false;
             }
-            else if (paketCuciCheck.equals("?")) {
+            else if (paketCuci.equals("?")) {
                 showPaket();
             }
             else {                                                                   // jika paket yang dipilih tidak sesuai --> meminta input kembali
