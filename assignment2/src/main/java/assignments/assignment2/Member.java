@@ -15,6 +15,27 @@ import assignments.assignment1.NotaGenerator;
 
 public class Member {
     // TODO: tambahkan attributes yang diperlukan untuk class ini
+    private String nama;
+    private String noHP;
+    private String id;
+    private int bonusCounter;
+
+    public String getNama() {
+        return nama;
+    }
+    
+    public String getNoHP() {
+        return noHP;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public int getBonusCounter() {
+        return bonusCounter;
+    }
+
     public Member(String nama, String noHp) {
         // TODO: buat constructor untuk class ini
     }
