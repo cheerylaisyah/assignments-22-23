@@ -14,12 +14,22 @@ package assignments.assignment2;
 import assignments.assignment1.NotaGenerator;
 
 public class Member {
-    // TODO: tambahkan attributes yang diperlukan untuk class ini
+    // attributes
     private String nama;
     private String noHP;
     private String id;
     private int bonusCounter;
 
+    
+    // constructor
+    public Member(String nama, String noHP, String id, int bonusCounter) {
+        this.nama = nama;
+        this.noHP = noHP;
+        this.id = id;
+        this.bonusCounter = bonusCounter;
+    }
+
+    // methods
     public String getNama() {
         return nama;
     }
@@ -36,9 +46,13 @@ public class Member {
         return bonusCounter;
     }
 
-    public Member(String nama, String noHp) {
-        // TODO: buat constructor untuk class ini
+    public int setBonusCounter() {
+        this.bonusCounter += 1;
+        return this.bonusCounter;
     }
 
-    // TODO: tambahkan methods yang diperlukan untuk class ini
+    public int resetBonusCounter() {
+        this.bonusCounter = 0;
+        return this.bonusCounter;
+    }
 }
