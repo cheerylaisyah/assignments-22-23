@@ -53,12 +53,16 @@ public class MainMenu {
         String nama = input.nextLine();
 
         System.out.println("Masukkan nomor handphone Anda: ");
-        String nomorHP = " ";
-        nomorHP = checkNomorHP(nomorHP);                                    // mem-validasi input user (nomor HP hanya boleh digit)
+        String nomorHP = input.nextLine();
+        while (!checkInput(nomorHP)) {                                      // mem-validasi input user (nomor HP hanya boleh digit)
+            System.out.printf("Field nomor hp hanya menerima digit.%n");
+            nomorHP = input.nextLine(); 
+        } 
 
         String iDPelanggan = generateId(nama, nomorHP);                     // memanggil method generate ID untuk mendapatkan ID pelanggan
         
         int bonusCounter = 0;
+
         // for loop untuk mengecek apakah ID sudah terdaftar dalam daftar member
         for(Member objMember : memberArrayList) {
             if (objMember != null) {
@@ -85,6 +89,7 @@ public class MainMenu {
         int beratCucian = 0;
         int sisaHariPengerjaan = 0;
         int bonusCounter = 0;
+        int match = 0;
         boolean isReady = false;
         Member memberPelanggan = null;
         boolean checkMember = true;
@@ -100,23 +105,26 @@ public class MainMenu {
         else {
             // for loop untuk mencari ID member yang diinput dalam memberArrayList
             for(Member objMember : memberArrayList) {
-                if (objMember != null) {
-                    if(!objMember.getId().equals(idMember)) {
-                        checkMember = false;
-                        System.out.printf("Member dengan ID %s tidak ditemukan!%n", idMember);
-                        return;
-                    }
-                    else if(objMember.getId().equals(idMember)) {
-                        memberPelanggan = objMember;
-                        if (objMember.getBonusCounter() < 3) {                  // jika bonus counter <3 --> akan ditambah 1 setiap pemesanan
-                            bonusCounter = memberPelanggan.setBonusCounter();
-                        }
-                        else if (objMember.getBonusCounter() == 3) {            // jika bonus counter == 3 --> akan direset ke 0
-                            bonusCounter = memberPelanggan.resetBonusCounter();
-                        }
-                    }
+                if (objMember.getId().equals(idMember)) {
+                    memberPelanggan = objMember;
+                    match += 1;
                 }
             }
+
+            // conditions sesuai validasi ID member
+            if (match == 1) {
+                if (memberPelanggan.getBonusCounter() < 3) {                  // jika bonus counter <3 --> akan ditambah 1 setiap pemesanan
+                    bonusCounter = memberPelanggan.setBonusCounter();
+                }
+                else if (memberPelanggan.getBonusCounter() == 3) {            // jika bonus counter == 3 --> akan direset ke 0
+                    bonusCounter = memberPelanggan.resetBonusCounter();
+                }
+            }
+            else {
+                checkMember = false;
+                System.out.printf("Member dengan ID %s tidak ditemukan!%n", idMember);
+                return;
+            }  
         }
 
         // jika member sudah terdaftar di memberArrayList
@@ -363,26 +371,21 @@ public class MainMenu {
     }
 
     /*
-     * Method untuk memvalidasi nomor HP (hanya menerima digit)
+     * Method untuk memvalidasi input user (hanya menerima digit)
      */
-    private static String checkNomorHP(String nomorHP) {
-        boolean checkNomorHP = true;
-    
-        // loop untuk memvalidasi setiap digit nomor HP 
-        while (checkNomorHP) {
-            nomorHP = input.nextLine();     
-            for (int i = 0; i < nomorHP.length(); i++) {
-                if (Character.isDigit(nomorHP.charAt(i))) {  
-                    checkNomorHP = false;                                               // jika nomor HP merupakan digit 
-                }
-                else {                                                                 
-                    checkNomorHP = true;                                                // jika nomor HP bukan digit/angka --> meminta input kembali
-                    System.out.printf("Field nomor hp hanya menerima digit.%n");
-                    break;
-                }
+    private static boolean checkInput (String str) {
+        boolean checkInput = false;
+        // loop untuk memvalidasi setiap digit nomor HP     
+        for (int i = 0; i < str.length(); i++) {
+            if (Character.isDigit(str.charAt(i))) {  
+                checkInput = true;                                               // jika nomor HP merupakan digit 
+            }
+            else {                                                                 
+                checkInput = false;                                                // jika nomor HP bukan digit/angka --> meminta input kembali
+                break;
             }
         }
-        return nomorHP;
+        return checkInput;
     }
 
     /*
@@ -447,28 +450,15 @@ public class MainMenu {
      * Method untuk meminta input ID Nota
      */
     private static int inputIdNota() {
+        
         System.out.println("Masukkan ID nota yang akan diambil: ");
-        int idNota = 0;
-        boolean checkIdNota = true;
+        String idNotaStr = input.nextLine();
+        while (!checkInput(idNotaStr)) {                                      // mem-validasi input user (ID nota hanya boleh bilangan positif)
+            System.out.printf("ID nota berbentuk angka positif!%n");
+            idNotaStr = input.nextLine(); 
+        } 
+        int idNota = Integer.parseInt(idNotaStr);                            // mengubah ID Nota dari String menjadi integer
 
-        // loop untuk validasi input user (harus bilangan positif)
-        while (checkIdNota) {
-            try {
-                idNota = input.nextInt();
-                if (idNota < 0) {                                                   // input user tidak sesuai ketentuan --> meminta input kembali
-                    System.out.println("ID nota berbentuk angka positif!");
-                }
-                else {
-                    checkIdNota = false;
-                }
-                
-            }
-            catch (InputMismatchException exception) {                              // input user tidak sesuai ketentuan --> meminta input kembali
-                System.out.println("ID nota berbentuk angka!");
-                input.next();
-            }
-        }
-        input.nextLine();
         return idNota;
     }
 }

@@ -11,8 +11,6 @@ Dosen       : Muhammad Hafizhuddin Hilman, S.Kom., M.Kom., Ph.D.
 
 package assignments.assignment2;
 
-// import assignments.assignment1.NotaGenerator;
-
 public class Nota {
     // attributes
     private int idNota;
