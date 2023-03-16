@@ -11,6 +11,11 @@ Dosen       : Muhammad Hafizhuddin Hilman, S.Kom., M.Kom., Ph.D.
 
 package assignments.assignment2;
 
+// import library java
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
+import java.util.*;
+
 public class Nota {
     // attributes
     private int idNota;
@@ -71,5 +76,62 @@ public class Nota {
 
     public void setIsReady(boolean isReady) {
        this.isReady = isReady;
+    }
+
+    /*
+     * Method untuk membuat Nota
+     */
+    public static String generateNota(String id, String paket, int berat, String tanggalTerima, int bonusCounter){
+        // starting value
+        int biaya = 0;
+        int durasi = 0;
+        long hargaDiscount = 0;
+        String tanggalSelesai = "";
+        String txtDiscount = "";
+
+        // conditions untuk menentukan biaya laundry dan durasi sesuai input user
+        if (paket.equalsIgnoreCase("express")) {
+            biaya = 12000;
+            durasi = 1;
+        }
+        else if (paket.equalsIgnoreCase("fast")) {
+            biaya = 10000;
+            durasi = 2;
+        }
+        else if (paket.equalsIgnoreCase("reguler")) {
+            biaya = 7000;
+            durasi = 3;
+        }
+        
+        // menghitung total biaya laundry sesuai biaya paket
+        int biayaTotal = biaya * berat;
+
+        // menghitung tanggal selesai laundry sesuai durasi paket
+        try {
+            SimpleDateFormat formatTanggal = new SimpleDateFormat("dd/MM/yyyy");
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(formatTanggal.parse(tanggalTerima));                          // ubah string ke ke form Date
+            
+            calendar.add(Calendar.DATE, durasi);                                           // menambahkan hari sesuai durasi paket
+            tanggalSelesai = formatTanggal.format(calendar.getTime());                     // set format tanggal selesai sesuai dengan ketentuan --> dd/MM/yyyy
+        }
+        catch (ParseException exception) {
+        }
+
+        // jika bonus counter == 3 --> pelanggan mendapat diskon member 50%
+        if (bonusCounter == 3) {
+            hargaDiscount = (biayaTotal*50)/100;
+            txtDiscount = String.format(" = %d (Discount member 50%s)", hargaDiscount, "%!!!");
+        }
+
+        // me-return nota pelanggan
+        return ("ID    : " + id + "\n" + 
+                "Paket : " + paket + "\n" + 
+                "Harga :" + "\n" +
+                berat + " kg x " + biaya + " = " + biayaTotal + txtDiscount + "\n" +
+                "Tanggal Terima  : " + tanggalTerima + "\n" +
+                "Tanggal Selesai : " + tanggalSelesai + "\n" +
+                "Status          : Belum bisa diambil :(" 
+                );
     }
 }

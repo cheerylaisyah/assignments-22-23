@@ -12,7 +12,6 @@ Dosen       : Muhammad Hafizhuddin Hilman, S.Kom., M.Kom., Ph.D.
 // import library yang diperlukan
 package assignments.assignment2;
 import java.text.SimpleDateFormat;
-import java.text.ParseException;
 import java.util.*;
 
 public class MainMenu {
@@ -54,12 +53,12 @@ public class MainMenu {
 
         System.out.println("Masukkan nomor handphone Anda: ");
         String nomorHP = input.nextLine();
-        while (!checkInput(nomorHP)) {                                      // mem-validasi input user (nomor HP hanya boleh digit)
+        while (!checkInput(nomorHP)) {                                                      // mem-validasi input user (nomor HP hanya boleh digit)
             System.out.printf("Field nomor hp hanya menerima digit.%n");
             nomorHP = input.nextLine(); 
         } 
 
-        String iDPelanggan = generateId(nama, nomorHP);                     // memanggil method generate ID untuk mendapatkan ID pelanggan
+        String iDPelanggan = Member.generateId(nama, nomorHP);                              // memanggil method generate ID untuk mendapatkan ID pelanggan
         
         int bonusCounter = 0;
 
@@ -98,7 +97,7 @@ public class MainMenu {
         String idMember = input.nextLine();
         
         // conditions untuk mengecek keberadaan ID member yang diinput
-        if(memberArrayList.size() <= 0) {                                       // jika memberArrayList masih kosong
+        if(memberArrayList.size() <= 0) {                                                   // jika memberArrayList masih kosong
             checkMember = false;
             System.out.printf("Member dengan ID %s tidak ditemukan!%n", idMember);
         }
@@ -113,10 +112,10 @@ public class MainMenu {
 
             // conditions sesuai validasi ID member
             if (match == 1) {
-                if (memberPelanggan.getBonusCounter() < 3) {                  // jika bonus counter <3 --> akan ditambah 1 setiap pemesanan
+                if (memberPelanggan.getBonusCounter() < 3) {                                // jika bonus counter <3 --> akan ditambah 1 setiap pemesanan
                     bonusCounter = memberPelanggan.setBonusCounter();
                 }
-                else if (memberPelanggan.getBonusCounter() == 3) {            // jika bonus counter == 3 --> akan direset ke 0
+                else if (memberPelanggan.getBonusCounter() == 3) {                          // jika bonus counter == 3 --> akan direset ke 0
                     bonusCounter = memberPelanggan.resetBonusCounter();
                 }
             }
@@ -129,8 +128,8 @@ public class MainMenu {
 
         // jika member sudah terdaftar di memberArrayList
         if (checkMember == true) {
-            paketCuci = inputPaketCuci();                                       // memanggil method input paket cuci
-            beratCucian = inputBeratCucian();                                   // memanggil method input paket cuci
+            paketCuci = inputPaketCuci();                                                   // memanggil method input paket cuci
+            beratCucian = inputBeratCucian();                                               // memanggil method input paket cuci
         }
         
         // menentukan sisaHariPengerjaan sesuai paket cuci yang dipilih
@@ -153,64 +152,7 @@ public class MainMenu {
 
         countId += 1;
         bonusCounter = memberPelanggan.getBonusCounter();
-        System.out.println(generateNota(idMember, paketCuci, beratCucian, fmt.format(cal.getTime()), bonusCounter));
-    }
-
-    /*
-     * Method untuk membuat Nota
-     */
-    private static String generateNota(String id, String paket, int berat, String tanggalTerima, int bonusCounter){
-        // starting value
-        int biaya = 0;
-        int durasi = 0;
-        long hargaDiscount = 0;
-        String tanggalSelesai = "";
-        String txtDiscount = "";
-
-        // conditions untuk menentukan biaya laundry dan durasi sesuai input user
-        if (paket.equalsIgnoreCase("express")) {
-            biaya = 12000;
-            durasi = 1;
-        }
-        else if (paket.equalsIgnoreCase("fast")) {
-            biaya = 10000;
-            durasi = 2;
-        }
-        else if (paket.equalsIgnoreCase("reguler")) {
-            biaya = 7000;
-            durasi = 3;
-        }
-        
-        // menghitung total biaya laundry sesuai biaya paket
-        int biayaTotal = biaya * berat;
-
-        // menghitung tanggal selesai laundry sesuai durasi paket
-        try {
-            SimpleDateFormat formatTanggal = new SimpleDateFormat("dd/MM/yyyy");
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(formatTanggal.parse(tanggalTerima));                          // ubah string ke ke form Date
-            
-            calendar.add(Calendar.DATE, durasi);                                           // menambahkan hari sesuai durasi paket
-            tanggalSelesai = formatTanggal.format(calendar.getTime());                     // set format tanggal selesai sesuai dengan ketentuan --> dd/MM/yyyy
-        }
-        catch (ParseException exception) {
-        }
-
-        // jika bonus counter == 3 --> pelanggan mendapat diskon member 50%
-        if (bonusCounter == 3) {
-            hargaDiscount = (biayaTotal*50)/100;
-            txtDiscount = String.format(" = %d (Discount member 50%s)", hargaDiscount, "%!!!");
-        }
-
-        // me-return nota pelanggan
-        return ("ID    : " + id + "\n" + 
-                "Paket : " + paket + "\n" + 
-                "Harga :" + "\n" +
-                berat + " kg x " + biaya + " = " + biayaTotal + txtDiscount + "\n" +
-                "Tanggal Terima  : " + tanggalTerima + "\n" +
-                "Tanggal Selesai : " + tanggalSelesai + "\n" +
-                "Status          : Belum bisa diambil :(" 
-                );
+        System.out.println(Nota.generateNota(idMember, paketCuci, beratCucian, fmt.format(cal.getTime()), bonusCounter));
     }
 
     /*
@@ -256,7 +198,7 @@ public class MainMenu {
      * Method untuk mengambil cucian
      */
     private static void handleAmbilCucian() {
-        int idNota = inputIdNota();                                             // memanggil method input ID nota
+        int idNota = inputIdNota();                                                         // memanggil method input ID nota
         
         // for loop untuk mengecek keberadaan ID nota yang diinput dalam notaArrayList
         for (Nota objNota : notaArrayList) {
@@ -279,7 +221,7 @@ public class MainMenu {
      * Method untuk menambah hari dalam sistem
      */
     private static void handleNextDay() {
-        cal.add(Calendar.DATE, 1);                                              // menambahkan 1 hari dalam sistem setiap method dipanggil
+        cal.add(Calendar.DATE, 1);                                                          // menambahkan 1 hari dalam sistem setiap method dipanggil
         System.out.println("Dek Depe tidur hari ini... zzz...");
         
         // for loop untuk mengurangi sisaHariPengerjaan
@@ -321,55 +263,6 @@ public class MainMenu {
         System.out.println("+-------------------------------+");
     }
 
-    /* 
-     * Method untuk set variable nama sesuai ketentuan (huruf kapital dan hanya kata pertama)
-     */ 
-    private static String checkNama(String nama) {
-        nama = nama.toUpperCase();
-        if (nama.contains(" ")){
-            String[] namaSplited = nama.split("\\s");
-            nama = namaSplited[0];
-        }
-        return nama;
-    }
-
-    /*
-     * Method untuk membuat ID dari nama dan nomor handphone
-     */
-    private static String generateId(String nama, String nomorHP){
-        nama = checkNama(nama);     
-        String iDSementara = nama + "-" + nomorHP;
-
-        // menghitung jumlah karakter dari ID Pelanggan
-        int checkSum = 0;
-        for (int i = 0; i < iDSementara.length(); i++) {
-            if (Character.isLetter(iDSementara.charAt(i))) {
-                checkSum += nama.charAt(i) - 'A'+1;                                 // mendapatkan nilai huruf
-            }
-            else if (Character.isDigit(iDSementara.charAt(i))) {
-                String nomorHPString = Character.toString(iDSementara.charAt(i));
-                checkSum += Integer.parseInt(nomorHPString);                        // mendapatkan nilai nomor HP
-            }
-            else {
-                checkSum += 7;                                                      // mendapatkan nilai selain huruf dan nomor HP
-            }
-        }
-
-        // menyesuaikan digit checksum sesuai ketentuan
-        String checkSumString = Integer.toString(checkSum);
-        if (checkSumString.length() > 2) {                                          // jika hasil checksum > 2 angka --> ambil 2 angka terakhir
-            String checkSumFinal = checkSumString.substring(checkSumString.length()-2, checkSumString.length());
-            checkSumString = checkSumFinal;
-        }
-        else if (checkSumString.length() == 1) {                                    // jika hasil checksum = 1 angka --> tambahkan 0 di depan
-            checkSumString = "0" + Integer.toString(checkSum);
-        }
-
-        // membuat dan me-return ID Pelanggan
-        String iDPelanggan = iDSementara + "-" + checkSumString;                    
-        return iDPelanggan;
-    }
-
     /*
      * Method untuk memvalidasi input user (hanya menerima digit)
      */
@@ -378,10 +271,10 @@ public class MainMenu {
         // loop untuk memvalidasi setiap digit nomor HP     
         for (int i = 0; i < str.length(); i++) {
             if (Character.isDigit(str.charAt(i))) {  
-                checkInput = true;                                               // jika nomor HP merupakan digit 
+                checkInput = true;                                                      // jika nomor HP merupakan digit 
             }
             else {                                                                 
-                checkInput = false;                                                // jika nomor HP bukan digit/angka --> meminta input kembali
+                checkInput = false;                                                     // jika nomor HP bukan digit/angka --> meminta input kembali
                 break;
             }
         }
@@ -453,11 +346,11 @@ public class MainMenu {
         
         System.out.println("Masukkan ID nota yang akan diambil: ");
         String idNotaStr = input.nextLine();
-        while (!checkInput(idNotaStr)) {                                      // mem-validasi input user (ID nota hanya boleh bilangan positif)
+        while (!checkInput(idNotaStr)) {                                            // mem-validasi input user (ID nota hanya boleh bilangan positif)
             System.out.printf("ID nota berbentuk angka positif!%n");
             idNotaStr = input.nextLine(); 
         } 
-        int idNota = Integer.parseInt(idNotaStr);                            // mengubah ID Nota dari String menjadi integer
+        int idNota = Integer.parseInt(idNotaStr);                                   // mengubah ID Nota dari String menjadi integer
 
         return idNota;
     }
