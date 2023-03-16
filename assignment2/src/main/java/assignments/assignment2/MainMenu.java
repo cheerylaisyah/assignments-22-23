@@ -9,16 +9,14 @@ Kode Asdos  : AYP
 Dosen       : Muhammad Hafizhuddin Hilman, S.Kom., M.Kom., Ph.D.
 */
 
+// import library yang diperlukan
 package assignments.assignment2;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
-// import java.util.Calendar;
-// import java.util.Scanner;
 import java.util.*;
 
-import static assignments.assignment1.NotaGenerator.*;
-
 public class MainMenu {
+    // state variable
     private static final Scanner input = new Scanner(System.in);
     private static SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");
     private static Calendar cal = Calendar.getInstance();
@@ -47,6 +45,9 @@ public class MainMenu {
         System.out.println("Terima kasih telah menggunakan NotaGenerator!");
     }
 
+    /*
+     * Method untuk generate user berdasarkan input
+     */
     private static void handleGenerateUser() {
         System.out.println("Masukkan nama Anda: ");
         String nama = input.nextLine();
@@ -58,29 +59,31 @@ public class MainMenu {
         String iDPelanggan = generateId(nama, nomorHP);                     // memanggil method generate ID untuk mendapatkan ID pelanggan
         
         int bonusCounter = 0;
+        // for loop untuk mengecek apakah ID sudah terdaftar dalam daftar member
         for(Member objMember : memberArrayList) {
             if (objMember != null) {
                 if(objMember.getId().equals(iDPelanggan)) {
-                    // bonusCounter = objMember.setBonusCounter();
                     System.out.printf("Member dengan nama %s dan nomor hp %s sudah ada!%n", nama, nomorHP);
                     return;
                 }
             }
         }
+        // add object memberBaru ke dalam daftar member jika ID belum terdaftar
         Member memberBaru = new Member(nama, nomorHP, iDPelanggan, bonusCounter);
         memberArrayList.add(memberBaru);
 
         // mencetak ID pelanggan sesuai input user
         System.out.printf("Berhasil membuat member dengan ID %s!%n", iDPelanggan);
-
-        // TODO: handle generate user
     }
 
+    /*
+     * Method untuk generate user berdasarkan input
+     */
     private static void handleGenerateNota() {
-        // TODO: handle ambil cucian
+        // starting variable
         String paketCuci = "";
         int beratCucian = 0;
-        int durasi = 0;
+        int sisaHariPengerjaan = 0;
         int bonusCounter = 0;
         boolean isReady = false;
         Member memberPelanggan = null;
@@ -89,11 +92,13 @@ public class MainMenu {
         System.out.println("Masukkan ID member: ");
         String idMember = input.nextLine();
         
-        if(memberArrayList.size() <= 0) {
+        // conditions untuk mengecek keberadaan ID member yang diinput
+        if(memberArrayList.size() <= 0) {                                       // jika memberArrayList masih kosong
             checkMember = false;
             System.out.printf("Member dengan ID %s tidak ditemukan!%n", idMember);
         }
         else {
+            // for loop untuk mencari ID member yang diinput dalam memberArrayList
             for(Member objMember : memberArrayList) {
                 if (objMember != null) {
                     if(!objMember.getId().equals(idMember)) {
@@ -103,10 +108,10 @@ public class MainMenu {
                     }
                     else if(objMember.getId().equals(idMember)) {
                         memberPelanggan = objMember;
-                        if (objMember.getBonusCounter() < 3) {
+                        if (objMember.getBonusCounter() < 3) {                  // jika bonus counter <3 --> akan ditambah 1 setiap pemesanan
                             bonusCounter = memberPelanggan.setBonusCounter();
                         }
-                        else if (objMember.getBonusCounter() == 3) {
+                        else if (objMember.getBonusCounter() == 3) {            // jika bonus counter == 3 --> akan direset ke 0
                             bonusCounter = memberPelanggan.resetBonusCounter();
                         }
                     }
@@ -114,35 +119,37 @@ public class MainMenu {
             }
         }
 
+        // jika member sudah terdaftar di memberArrayList
         if (checkMember == true) {
-            paketCuci = inputPaketCuci();                                // memanggil method input paket cuci
-            beratCucian = inputBeratCucian();                               // memanggil method input paket cuci
+            paketCuci = inputPaketCuci();                                       // memanggil method input paket cuci
+            beratCucian = inputBeratCucian();                                   // memanggil method input paket cuci
         }
-
+        
+        // menentukan sisaHariPengerjaan sesuai paket cuci yang dipilih
         if (paketCuci.equalsIgnoreCase("express")) {
-            durasi = 1;
+            sisaHariPengerjaan = 1;
         }
         else if (paketCuci.equalsIgnoreCase("fast")) {
-            durasi = 2;
+            sisaHariPengerjaan = 2;
         }
         else if (paketCuci.equalsIgnoreCase("reguler")) {
-            durasi = 3;
+            sisaHariPengerjaan = 3;
         }
 
         System.out.println("Berhasil menambahkan nota!");
         System.out.printf("[ID Nota = %d]%n", countId);
 
-        Nota notaBaru = new Nota(countId, paketCuci, memberPelanggan, beratCucian, fmt.format(cal.getTime()), durasi, isReady);
+        // membuat object notaBaru dan menambahkannya ke notaArrayList
+        Nota notaBaru = new Nota(countId, paketCuci, memberPelanggan, beratCucian, fmt.format(cal.getTime()), sisaHariPengerjaan, isReady);
         notaArrayList.add(notaBaru);
 
         countId += 1;
-
         bonusCounter = memberPelanggan.getBonusCounter();
         System.out.println(generateNota(idMember, paketCuci, beratCucian, fmt.format(cal.getTime()), bonusCounter));
     }
 
     /*
-     * method untuk membuat Nota
+     * Method untuk membuat Nota
      */
     private static String generateNota(String id, String paket, int berat, String tanggalTerima, int bonusCounter){
         // starting value
@@ -181,6 +188,7 @@ public class MainMenu {
         catch (ParseException exception) {
         }
 
+        // jika bonus counter == 3 --> pelanggan mendapat diskon member 50%
         if (bonusCounter == 3) {
             hargaDiscount = (biayaTotal*50)/100;
             txtDiscount = String.format(" = %d (Discount member 50%s)", hargaDiscount, "%!!!");
@@ -197,9 +205,14 @@ public class MainMenu {
                 );
     }
 
+    /*
+     * Method untuk handle list nota
+     */
     private static void handleListNota() {
-        int banyakNota = notaArrayList.size();
+        int banyakNota = notaArrayList.size();                                             // menentukan banyak nota berdasarkan panjang notaArrayList
         System.out.printf("Terdaftar %d nota dalam sistem.%n", banyakNota);
+
+        // jika banyak nota > 0 --> akan mengecek status kesiapan setiap pesanan
         if (banyakNota > 0) {
             for(Nota objNota : notaArrayList) {
                 if(objNota != null) {
@@ -212,23 +225,32 @@ public class MainMenu {
                 }
             }
         }
-        // TODO: handle list semua nota pada sistem
     }
 
-    private static void handleListUser() {
-        int banyakMember = memberArrayList.size();
+    /*
+     * Method untuk handle list user
+     */
+    private static void handleListUser() {                                             
+        int banyakMember = memberArrayList.size();                                         // menentukan banyak member berdasarkan panjang memberArrayList
         System.out.printf("Terdaftar %d member dalam sistem.%n", banyakMember);
-        for(Member objMember : memberArrayList) {
-            if (objMember != null) {
-               System.out.printf("- %s : %s%n", objMember.getId(), objMember.getNama());
+        
+        // jika banyak member > 0 --> akan mencetak id dan nama setiap member
+        if (banyakMember > 0) {
+            for(Member objMember : memberArrayList) {
+                if (objMember != null) {
+                   System.out.printf("- %s : %s%n", objMember.getId(), objMember.getNama());
+                }
             }
         }
-        // TODO: handle list semua user pada sistem
     }
 
+    /*
+     * Method untuk mengambil cucian
+     */
     private static void handleAmbilCucian() {
-        // TODO: handle ambil cucian
-        int idNota = inputIdNota();
+        int idNota = inputIdNota();                                             // memanggil method input ID nota
+        
+        // for loop untuk mengecek keberadaan ID nota yang diinput dalam notaArrayList
         for (Nota objNota : notaArrayList) {
             if (objNota.getIdNota() == idNota) {
                 if(objNota.getIsReady()) {
@@ -245,12 +267,17 @@ public class MainMenu {
         System.out.printf("Nota dengan ID %d tidak ditemukan!%n", idNota);
     }
 
-
+    /*
+     * Method untuk menambah hari dalam sistem
+     */
     private static void handleNextDay() {
-        cal.add(Calendar.DATE, 1);
+        cal.add(Calendar.DATE, 1);                                              // menambahkan 1 hari dalam sistem setiap method dipanggil
         System.out.println("Dek Depe tidur hari ini... zzz...");
+        
+        // for loop untuk mengurangi sisaHariPengerjaan
         for(Nota objNota : notaArrayList) {
             objNota.setSisaHariPengerjaan(objNota.getSisaHariPengerjaan()-1);
+            // mengecek kesiapan pesanan
             if(objNota.getIsReady()) {
                 System.out.printf("Laundry dengan nota ID %d sudah dapat diambil!%n", objNota.getIdNota());
             }
@@ -259,6 +286,9 @@ public class MainMenu {
         System.out.printf("Dek Depe: It's CuciCuci Time.%n");
     }
 
+    /*
+     * Method untuk menampilkan menu
+     */
     private static void printMenu() {
         System.out.println("\nSelamat datang di CuciCuci!");
         System.out.printf("Sekarang Tanggal: %s\n", fmt.format(cal.getTime()));
@@ -273,7 +303,7 @@ public class MainMenu {
     }
 
     /*
-     * method untuk menampilkan paket
+     * Method untuk menampilkan paket
      */
     private static void showPaket() {
         System.out.println("+-------------Paket-------------+");
@@ -284,7 +314,7 @@ public class MainMenu {
     }
 
     /* 
-     * method untuk set variable nama sesuai ketentuan (huruf kapital dan hanya kata pertama)
+     * Method untuk set variable nama sesuai ketentuan (huruf kapital dan hanya kata pertama)
      */ 
     private static String checkNama(String nama) {
         nama = nama.toUpperCase();
@@ -296,7 +326,7 @@ public class MainMenu {
     }
 
     /*
-     * method untuk membuat ID dari nama dan nomor handphone
+     * Method untuk membuat ID dari nama dan nomor handphone
      */
     private static String generateId(String nama, String nomorHP){
         nama = checkNama(nama);     
@@ -333,7 +363,7 @@ public class MainMenu {
     }
 
     /*
-     * method untuk memvalidasi nomor HP (hanya menerima digit)
+     * Method untuk memvalidasi nomor HP (hanya menerima digit)
      */
     private static String checkNomorHP(String nomorHP) {
         boolean checkNomorHP = true;
@@ -356,7 +386,7 @@ public class MainMenu {
     }
 
     /*
-     * method untuk meminta input paket cuci yang dipilih
+     * Method untuk meminta input paket cuci yang dipilih
      */
     private static String inputPaketCuci() {
         String paketCuci = "";
@@ -382,7 +412,7 @@ public class MainMenu {
     }
 
     /*
-     * method untuk meminta input berat cucian
+     * Method untuk meminta input berat cucian
      */
     private static int inputBeratCucian() {
         System.out.println("Masukkan berat cucian Anda [Kg]: ");
@@ -414,7 +444,7 @@ public class MainMenu {
     }
 
     /*
-     * method untuk meminta input berat cucian
+     * Method untuk meminta input ID Nota
      */
     private static int inputIdNota() {
         System.out.println("Masukkan ID nota yang akan diambil: ");
@@ -425,11 +455,13 @@ public class MainMenu {
         while (checkIdNota) {
             try {
                 idNota = input.nextInt();
-                if (idNota < 0) {
+                if (idNota < 0) {                                                   // input user tidak sesuai ketentuan --> meminta input kembali
                     System.out.println("ID nota berbentuk angka positif!");
-                    // input.next();
                 }
-                checkIdNota = false;
+                else {
+                    checkIdNota = false;
+                }
+                
             }
             catch (InputMismatchException exception) {                              // input user tidak sesuai ketentuan --> meminta input kembali
                 System.out.println("ID nota berbentuk angka!");

@@ -11,7 +11,7 @@ Dosen       : Muhammad Hafizhuddin Hilman, S.Kom., M.Kom., Ph.D.
 
 package assignments.assignment2;
 
-import assignments.assignment1.NotaGenerator;
+// import assignments.assignment1.NotaGenerator;
 
 public class Nota {
     // attributes
@@ -66,11 +66,6 @@ public class Nota {
             setIsReady(true);
         }
     }
-
-    // public int setIdNota() {
-    //     this.idNota += 1;
-    //     return this.idNota;
-    // }
 
     public boolean getIsReady() {
         return isReady;
