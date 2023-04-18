@@ -1,3 +1,14 @@
+/*
+TP 3
+Nama            : Cheeryl Aisyah Retnowibowo
+NPM             : 2206813706
+Kelas           : DDP2 - D
+Tanggal         : Senin, 17 April 2023
+
+Asisten Dosen   : AYP
+Dosen           : Muhammad Hafizhuddin Hilman, S.Kom., M.Kom., Ph.D.
+*/
+
 package assignments.assignment3;
 
 import assignments.assignment1.NotaGenerator;
