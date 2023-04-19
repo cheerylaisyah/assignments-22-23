@@ -1,11 +1,14 @@
 package assignments.assignment3.user;
 
 import assignments.assignment3.nota.Nota;
+import java.util.ArrayList;
+
 public class Member {
     protected String id;
     protected String password;
     protected String nama;
     protected Nota[] notaList = new Nota[0];
+    protected ArrayList<Nota> notaListTemp = new ArrayList<Nota>();
 
     public Member(String nama, String id, String password) {
         this.nama = nama;
@@ -30,6 +33,9 @@ public class Member {
      * @param nota Nota object untuk ditambahkan.
      */
     public void addNota(Nota nota) {
+        notaListTemp.add(nota);
+        notaList = notaListTemp.toArray(new Nota[notaListTemp.size()]);
+        System.out.println("Nota berhasil dibuat!");
         // TODO
     }
 
@@ -40,6 +46,9 @@ public class Member {
      * @return true jika ID dan password sesuai dengan instance member, false jika tidak.
      */
     protected boolean authenticate(String password) {
+        if(password.equals(this.password)){
+            return true;
+        }
         // TODO
         return false;
     }

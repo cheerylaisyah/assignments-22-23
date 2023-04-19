@@ -1,6 +1,8 @@
 package assignments.assignment3.nota;
 import assignments.assignment3.nota.service.LaundryService;
 import assignments.assignment3.user.Member;
+import assignments.assignment1.NotaGenerator;
+
 public class Nota {
     private Member member;
     private String paket;
@@ -14,6 +16,13 @@ public class Nota {
     static public int totalNota;
 
     public Nota(Member member, int berat, String paket, String tanggal) {
+        this.id = totalNota;
+        this.member = member;
+        this.paket = paket;
+        this.berat = berat;
+        this.tanggalMasuk = tanggal;
+        this.sisaHariPengerjaan = NotaGenerator.toHariPaket(paket);
+        totalNota++;
         //TODO
     }
 
@@ -22,10 +31,23 @@ public class Nota {
     }
 
     public String kerjakan(){
+        String temp = String.format("Nota %d : ", id);
+        for(LaundryService objLaundryService : services){
+            if (objLaundryService.isDone()) continue;
+            temp += objLaundryService.doWork();
+            if (objLaundryService == services[services.length-1]){
+                isDone = true;
+            }
+        }
         // TODO
-        return "";
+        return temp;
     }
+    
     public void toNextDay() {
+        sisaHariPengerjaan--;
+        if(sisaHariPengerjaan <= 0){
+            isDone = true;
+        }
         // TODO
     }
 
@@ -35,8 +57,10 @@ public class Nota {
     }
 
     public String getNotaStatus(){
+        String message = this.isDone ? "Sudah selesai." : "Belum selesai.";
+        return String.format("Nota %d : %s.%n", id, message);
         // TODO
-        return "";
+        // return "";
     }
 
     @Override
@@ -62,6 +86,7 @@ public class Nota {
     public int getSisaHariPengerjaan(){
         return sisaHariPengerjaan;
     }
+
     public boolean isDone() {
         return isDone;
     }
