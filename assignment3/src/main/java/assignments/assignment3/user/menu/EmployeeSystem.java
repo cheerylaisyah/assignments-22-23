@@ -31,8 +31,9 @@ public class EmployeeSystem extends SystemCLI {
     protected boolean processChoice(int choice) {
         if (choice == 1){
             System.out.printf("Stand back! %s beginning to nyuci!", loginMember.getNama());
+            System.out.println("");
             for (Nota objNota: NotaManager.notaList) {
-                objNota.kerjakan();
+                System.out.println(objNota.kerjakan());
             }
         }
 
@@ -43,12 +44,12 @@ public class EmployeeSystem extends SystemCLI {
         }
 
         else if (choice == 3) {
-            boolean logout = false;
+            boolean logout = true;
             return logout;
         }
 
         // TODO:
-        return true;
+        return false;
     }
 
     /**

@@ -51,7 +51,17 @@ public class LoginManager {
      * @return Member object yang berhasil mendaftar, return null jika gagal mendaftar.
      */
     public Member register(String nama, String noHp, String password) {
+        String id = NotaGenerator.generateId(nama, noHp);
+        // System.out.println(id); apus bro
+        if (getSystem(id) == null) {
+            Member newMember = new Member(nama, id, password);
+            memberSystem.addMember(newMember);
+            return newMember;
+        }
         // TODO
         return null;
     }
+
+    
+
 }
