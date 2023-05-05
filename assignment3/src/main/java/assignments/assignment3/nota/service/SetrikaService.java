@@ -7,20 +7,17 @@ public class SetrikaService implements LaundryService{
     @Override
     public String doWork() {
         isDone = true;
-        // TODO
-        return "Sedang menyetrika...\n";
+        return "Sedang menyetrika...";
     }
 
     @Override
     public boolean isDone() {
-        // TODO
         return isDone;
     }
 
     @Override
     public long getHarga(int berat) {
         harga = berat*1000;
-        // TODO
         return harga;
     }
 

@@ -25,6 +25,7 @@ public abstract class SystemCLI {
         if (authMember != null) {
             this.in = in;
             System.out.println("Login successful!");
+            // System.out.println("");
             run(in, authMember);
             return;
         }

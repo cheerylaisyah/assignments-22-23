@@ -18,7 +18,6 @@ public class Employee extends Member {
         id += (nama.split(" ")[0] + "-").toUpperCase();
         id += employeeCount;
         employeeCount++;
-        // TODO
         return id;
     }
 }

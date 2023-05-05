@@ -33,22 +33,27 @@ public class EmployeeSystem extends SystemCLI {
             System.out.printf("Stand back! %s beginning to nyuci!", loginMember.getNama());
             System.out.println("");
             for (Nota objNota: NotaManager.notaList) {
+                // if (objNota.isDone() == true) {
+                //     System.out.println();
+                //     break;
+                // }
                 System.out.println(objNota.kerjakan());
             }
+            // System.out.println("");
         }
 
         else if (choice == 2) {
             for (Nota objNota: NotaManager.notaList) {
-                objNota.getNotaStatus();
+                System.out.println(objNota.getNotaStatus());
             }
+            // System.out.println("");
         }
 
         else if (choice == 3) {
             boolean logout = true;
             return logout;
         }
-
-        // TODO:
+        
         return false;
     }
 

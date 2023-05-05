@@ -25,8 +25,8 @@ public class MemberSystem extends SystemCLI {
             int berat = NotaGenerator.getBerat();
             Nota newNota = new Nota(loginMember, berat, paket, tanggalTerima);
 
-            LaundryService newCuciService = new CuciService();
-            newNota.addService(newCuciService);
+            // LaundryService newCuciService = new CuciService();
+            // newNota.addService(newCuciService);
 
             System.out.println("Apakah kamu ingin cucianmu disetrika oleh staff professional kami?");
             System.out.println("Hanya tambah 1000 / kg :0");
@@ -53,6 +53,7 @@ public class MemberSystem extends SystemCLI {
             }
             loginMember.addNota(newNota);
             NotaManager.addNota(newNota);
+            // System.out.println("");
         }
 
         else if (choice == 2) {
@@ -70,8 +71,10 @@ public class MemberSystem extends SystemCLI {
                         if(loginMember.getId().equals(objNota.getMember().getId())) {
                             // System.out.println("wadaw");
                             System.out.println(objNota);
+                            System.out.println("");
                         }
                     }
+                    // System.out.println("");
                 // `}
             // }
         }
@@ -81,7 +84,6 @@ public class MemberSystem extends SystemCLI {
             return logout;
         }
 
-        // TODO:
         return false;
     }
 
@@ -100,17 +102,18 @@ public class MemberSystem extends SystemCLI {
      *
      * @param member -> Member baru yang akan ditambahkan.
      */
-    public void addMember(Member member) {
-        // TODO
+    public void addMember(Member member) { 
         memberListTemp.add(member);
         memberList = memberListTemp.toArray(new Member[memberListTemp.size()]);
     }
 
+    // perlu dibenerin!! jamal
     public static String getPaket(Scanner in) {
         String paket = "";
+        System.out.println("Masukan paket laundry:");
+        NotaGenerator.showPaket();
+
         while (true) {
-            System.out.println("Masukan paket laundry:");
-            NotaGenerator.showPaket();
             paket = in.nextLine();
 
             if (paket.equals("?")) {

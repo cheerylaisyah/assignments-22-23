@@ -22,7 +22,6 @@ public class NotaManager {
                 continue;
             nota.toNextDay();
         }
-        //TODO: implement skip hari
     }
 
     /**
@@ -34,6 +33,5 @@ public class NotaManager {
         notaListTemp.add(nota);
         notaList = notaListTemp.toArray(new Nota[notaListTemp.size()]);
         //System.out.println("Nota berhasil dibuat!");
-        //TODO: implement add nota
     }
 }

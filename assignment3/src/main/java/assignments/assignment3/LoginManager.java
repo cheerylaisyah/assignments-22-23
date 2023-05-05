@@ -58,7 +58,6 @@ public class LoginManager {
             memberSystem.addMember(newMember);
             return newMember;
         }
-        // TODO
         return null;
     }
 

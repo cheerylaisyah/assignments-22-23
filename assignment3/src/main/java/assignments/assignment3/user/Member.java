@@ -36,7 +36,6 @@ public class Member {
         notaListTemp.add(nota);
         notaList = notaListTemp.toArray(new Nota[notaListTemp.size()]);
         System.out.println("Nota berhasil dibuat!");
-        // TODO
     }
 
     /**
@@ -49,7 +48,6 @@ public class Member {
         if(password.equals(this.password)){
             return true;
         }
-        // TODO
         return false;
     }
 

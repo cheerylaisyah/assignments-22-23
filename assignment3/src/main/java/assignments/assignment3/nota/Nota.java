@@ -2,6 +2,7 @@ package assignments.assignment3.nota;
 import assignments.assignment3.nota.service.LaundryService;
 import assignments.assignment3.user.Member;
 import assignments.assignment1.NotaGenerator;
+import assignments.assignment3.nota.service.CuciService;
 import java.util.ArrayList;
 
 public class Nota {
@@ -15,6 +16,8 @@ public class Nota {
     private int id;
     private String tanggalMasuk;
     private boolean isDone;
+    private int checkDone;
+    private long hargaAkhir;
     static public int totalNota;
 
     public Nota(Member member, int berat, String paket, String tanggal) {
@@ -24,21 +27,30 @@ public class Nota {
         this.berat = berat;
         this.tanggalMasuk = tanggal;
         this.sisaHariPengerjaan = NotaGenerator.toHariPaket(paket);
+        this.services = new LaundryService[0];
+        this.servicesTemp = new ArrayList<LaundryService>();
+        LaundryService newCuciService = new CuciService();
+        addService(newCuciService);
+
         totalNota++;
-        //TODO
     }
 
     public void addService(LaundryService service){
         servicesTemp.add(service);
         services = servicesTemp.toArray(new LaundryService[servicesTemp.size()]);
-        //TODO
     }
 
     public String kerjakan(){
         String temp = String.format("Nota %d : ", id);
-        System.out.println(services.length);
         for(LaundryService objLaundryService : services){
-            if (objLaundryService.isDone()) continue;
+            if (objLaundryService.isDone()) {
+                if (objLaundryService == services[services.length-1]) {
+                    temp += "Sudah selesai.";
+                    // isDone = true;
+                }
+                // temp += "Sudah selesai.";
+                continue;
+            }
             temp += objLaundryService.doWork();        
             if (objLaundryService == services[services.length-1]){
                 isDone = true;
@@ -46,38 +58,38 @@ public class Nota {
             return temp;
         }
         return temp;
-        // TODO
         
     }
     
     public void toNextDay() {
         sisaHariPengerjaan--;
-        if(sisaHariPengerjaan <= 0){
-            isDone = true;
+        if(sisaHariPengerjaan < 0 && isDone != true){
+            checkDone += 1;
+            //isDone = true;
         }
-        // TODO
     }
 
     public long calculateHarga(){
         baseHarga = getBerat() * NotaGenerator.toHargaPaket(getPaket());
-        long tempHarga = baseHarga;
+        hargaAkhir = baseHarga;
         for (LaundryService objLaundryService : services) {
-            tempHarga += objLaundryService.getHarga(berat);
+            hargaAkhir += objLaundryService.getHarga(berat);
         }
-        // TODO
-        return tempHarga;
+        hargaAkhir -= checkDone*2000;
+        if (hargaAkhir < 0) return 0;
+        
+        return hargaAkhir;
     }
 
     public String getNotaStatus(){
-        String message = this.isDone ? "Sudah selesai." : "Belum selesai.";
-        return String.format("Nota %d : %s.%n", id, message);
-        // TODO
+        String message = this.isDone ? "Sudah selesai" : "Belum selesai";
+        return String.format("Nota %d : %s.", id, message);
+        
         // return "";
     }
 
     @Override
     public String toString(){
-        // TODO
         return String.format("[ID Nota = %d]%n", id) + NotaGenerator.generateNota(member.getId(), paket, berat, tanggalMasuk, false) + "\n"
         + getServiceList();
     }
@@ -87,7 +99,13 @@ public class Nota {
         for (LaundryService objLaundryService : services) {
             message += String.format("-%s @ Rp.%d%n", objLaundryService.getServiceName(), objLaundryService.getHarga(berat));
         }
-        message += String.format("Harga Akhir: %d%n", calculateHarga());
+        //cekk jamal
+        if (checkDone == 0) {
+            message += String.format("Harga Akhir: %d", calculateHarga());
+        }
+        else {
+            message += String.format("Harga Akhir: %d Ada kompensasi keterlambatan %d * 2000 hari", calculateHarga(), checkDone);
+        }
         return String.format("--- SERVICE LIST ---%n") + message;
     }
 

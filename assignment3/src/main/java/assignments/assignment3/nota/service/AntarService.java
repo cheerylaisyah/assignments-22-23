@@ -9,25 +9,22 @@ public class AntarService implements LaundryService{
     @Override
     public String doWork() {
         isDone = true;
-        // TODO
-        return "Sedang mengantar...\n";
+        return "Sedang mengantar...";
     }
 
     @Override
     public boolean isDone() {
-        // TODO
         return isDone;
     }
 
     @Override
     public long getHarga(int berat) {
-        if (berat <= 2) {
+        if (berat <= 4) {
             harga = 2000;
         }
         else {
-            harga = 2000 + (berat*500);
+            harga = berat*500;
         }
-        // TODO
         return harga;
     }
 
