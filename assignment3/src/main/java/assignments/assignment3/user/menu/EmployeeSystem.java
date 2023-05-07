@@ -49,6 +49,10 @@ public class EmployeeSystem extends SystemCLI {
             boolean logout = true;
             return logout;
         }
+
+        else {
+            System.out.println("Pilihan tidak valid, silakan coba lagi.");
+        }
         
         return false;
     }

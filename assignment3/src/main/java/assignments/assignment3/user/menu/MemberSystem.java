@@ -82,6 +82,10 @@ public class MemberSystem extends SystemCLI {
             return logout;
         }
 
+        else {
+            System.out.println("Pilihan tidak valid, silakan coba lagi.");
+        }
+
         return false;
     }
 
