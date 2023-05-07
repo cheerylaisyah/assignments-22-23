@@ -65,8 +65,10 @@ public class NotaGenerator {
 
     public static String getPaket() {
         String paket = "";
+        System.out.println("Masukan paket laundry:");
+        showPaket();
+
         while (true) {
-            System.out.println("Masukan paket laundry:");
             paket = input.nextLine();
 
             if (paket.equals("?")) {

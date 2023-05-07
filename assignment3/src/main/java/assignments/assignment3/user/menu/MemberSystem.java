@@ -1,5 +1,5 @@
 package assignments.assignment3.user.menu;
-import java.util.Scanner;
+// import java.util.Scanner;
 
 import assignments.assignment1.NotaGenerator;
 import assignments.assignment3.nota.Nota;
@@ -22,7 +22,7 @@ public class MemberSystem extends SystemCLI {
         if (choice == 1){
             // attributes yang diperlukan
             String tanggalTerima = NotaManager.fmt.format(NotaManager.cal.getTime());
-            String paket = getPaket(in);
+            String paket = NotaGenerator.getPaket();
             int berat = NotaGenerator.getBerat();
             Nota newNota = new Nota(loginMember, berat, paket, tanggalTerima);
 
@@ -107,31 +107,5 @@ public class MemberSystem extends SystemCLI {
     public void addMember(Member member) { 
         memberListTemp.add(member);
         memberList = memberListTemp.toArray(new Member[memberListTemp.size()]);
-    }
-
-    /*
-     * Method untuk mendapatkan input paket apa yang dipilih user
-     */
-    public static String getPaket(Scanner in) {
-        String paket = "";
-        System.out.println("Masukan paket laundry:");
-        NotaGenerator.showPaket();
-
-        while (true) {
-            paket = in.nextLine();
-
-            if (paket.equals("?")) {
-                NotaGenerator.showPaket();
-                continue;
-            }
-
-            if (NotaGenerator.toHargaPaket(paket) < 0) {
-                System.out.printf("Paket %s tidak diketahui\n", paket);
-                System.out.println("[ketik ? untuk mencari tahu jenis paket]");
-            } else {
-                break;
-            }
-        }
-        return paket;
     }
 }
