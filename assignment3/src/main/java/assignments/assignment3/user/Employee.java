@@ -1,7 +1,10 @@
 package assignments.assignment3.user;
 
 public class Employee extends Member {
+    // Attribute
     public static int employeeCount = 0;
+
+    // Constructor
     public Employee(String nama, String password) {
         super(nama, generateId(nama), password);
     }

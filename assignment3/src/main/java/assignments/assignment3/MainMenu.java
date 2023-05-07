@@ -23,6 +23,7 @@ import static assignments.assignment3.nota.NotaManager.cal;
 import static assignments.assignment3.nota.NotaManager.fmt;
 
 public class MainMenu {
+    // Attributes
     private final Scanner in;
     private final LoginManager loginManager;
 
@@ -78,6 +79,10 @@ public class MainMenu {
         String nama = in.nextLine();
         System.out.println("Masukan nomor handphone Anda: ");
         String noHp = in.nextLine();
+        while (!isNumeric(noHp)) {
+            System.out.println("Nomor hp hanya menerima digit");
+            noHp = in.nextLine();
+        }
         System.out.println("Masukan password Anda: ");
         String password = in.nextLine();
 
@@ -119,5 +124,16 @@ public class MainMenu {
         System.out.println("3. Tidur (Skip hari)");
         System.out.println("4. Exit");
         System.out.print("Apa yang ingin Anda lakukan hari ini? ");
+    }
+
+    /*
+     * Method untuk handle bahwa input user harus berupa digit angka
+     */
+    private static boolean isNumeric(String str) {
+        for (char c : str.toCharArray()) {
+            if (!Character.isDigit(c))
+                return false;
+        }
+        return true;
     }
 }

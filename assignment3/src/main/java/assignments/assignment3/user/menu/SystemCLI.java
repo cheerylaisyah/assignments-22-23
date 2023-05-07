@@ -6,6 +6,7 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 public abstract class SystemCLI {
+    // Attributes
     protected Member[] memberList = new Member[0];
     protected ArrayList<Member> memberListTemp = new ArrayList<Member>();
     protected Member loginMember;
@@ -25,7 +26,7 @@ public abstract class SystemCLI {
         if (authMember != null) {
             this.in = in;
             System.out.println("Login successful!");
-            // System.out.println("");
+           
             run(in, authMember);
             return;
         }
@@ -112,6 +113,9 @@ public abstract class SystemCLI {
      */
     protected abstract void displaySpecificMenu();
 
+    /*
+     * Method getter yang diperlukan
+     */
     public Member[] getMemberList(){
         return memberList;
     }

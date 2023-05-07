@@ -18,9 +18,11 @@ import assignments.assignment3.user.menu.MemberSystem;
 import assignments.assignment3.user.menu.SystemCLI;
 
 public class LoginManager {
+    // Attributes
     private final EmployeeSystem employeeSystem;
     private final MemberSystem memberSystem;
 
+    // Constructor
     public LoginManager(EmployeeSystem employeeSystem, MemberSystem memberSystem) {
         this.employeeSystem = employeeSystem;
         this.memberSystem = memberSystem;
@@ -52,7 +54,7 @@ public class LoginManager {
      */
     public Member register(String nama, String noHp, String password) {
         String id = NotaGenerator.generateId(nama, noHp);
-        // System.out.println(id); apus bro
+       
         if (getSystem(id) == null) {
             Member newMember = new Member(nama, id, password);
             memberSystem.addMember(newMember);

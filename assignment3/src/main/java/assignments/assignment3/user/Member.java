@@ -4,12 +4,14 @@ import assignments.assignment3.nota.Nota;
 import java.util.ArrayList;
 
 public class Member {
+    // Attributes
     protected String id;
     protected String password;
     protected String nama;
     protected Nota[] notaList = new Nota[0];
     protected ArrayList<Nota> notaListTemp = new ArrayList<Nota>();
 
+    // Constructor
     public Member(String nama, String id, String password) {
         this.nama = nama;
         this.id = id;
@@ -51,7 +53,9 @@ public class Member {
         return false;
     }
 
-    // Dibawah ini adalah getter
+    /*
+     * Method getter yang diperlukan
+     */
 
     public String getNama() {
         return nama;

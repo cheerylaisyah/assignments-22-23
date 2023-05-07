@@ -20,63 +20,61 @@ public class MemberSystem extends SystemCLI {
     @Override
     protected boolean processChoice(int choice) {
         if (choice == 1){
+            // attributes yang diperlukan
             String tanggalTerima = NotaManager.fmt.format(NotaManager.cal.getTime());
             String paket = getPaket(in);
             int berat = NotaGenerator.getBerat();
             Nota newNota = new Nota(loginMember, berat, paket, tanggalTerima);
 
-            // LaundryService newCuciService = new CuciService();
-            // newNota.addService(newCuciService);
-
+            // meminta input apakah user ingin menambahkan service setrika
             System.out.println("Apakah kamu ingin cucianmu disetrika oleh staff professional kami?");
             System.out.println("Hanya tambah 1000 / kg :0");
             System.out.print("[Ketik x untuk tidak mau]: ");
             String serviceSetrika = in.nextLine();
-            // System.out.println("");
-            LaundryService newServiceSetrika = new SetrikaService();
+
+            LaundryService newServiceSetrika = new SetrikaService();         
+
+            // jika user meng-input "x" maka tidak akan melakukan apa-apa
             if (serviceSetrika.equalsIgnoreCase("x")){
             }
+            // akan menambahkan service setrika ke nota user
             else {
                 newNota.addService(newServiceSetrika);
             }
 
+            // meminta input apakah user ingin menambahkan service antar
             System.out.println("Mau diantar oleh kurir kami? Dijamin aman dan cepat sampai tujuan!");
             System.out.println("Cuma 2000 / 4kg, kemudian 500 / kg");
             System.out.print("[Ketik x untuk tidak mau]: ");
             String serviceAntar = in.nextLine();
-            // System.out.println("");
+
             LaundryService newServiceAntar = new AntarService();
+
+            // jika user meng-input "x" maka tidak akan melakukan apa-apa
             if (serviceAntar.equalsIgnoreCase("x")){
             }
+            // akan menambahkan service antar ke nota user
             else {
                 newNota.addService(newServiceAntar);
             }
+
+            // menambahkan nota baru ke notaList member dari notaList sistem
             loginMember.addNota(newNota);
             NotaManager.addNota(newNota);
-            // System.out.println("");
         }
 
         else if (choice == 2) {
-            //System.out.println(loginMember.getNotaList());
-            // System.out.println(loginMember.getId());
-            // System.out.println(loginMember.getNotaList().length);
-            // for (Member objMember : memberList) {
-            //     System.out.println("tes");
-            //     if (loginMember.getId().equals(objMember.getId())) {
-            //         System.out.println(("jamal"));
-                    for (Nota objNota: loginMember.getNotaList()) {
-                        // System.out.println("astaghfirullah");
-                        // System.out.println(loginMember.getId());
-                        // System.out.println(objNota.getMember().getId());
-                        if(loginMember.getId().equals(objNota.getMember().getId())) {
-                            // System.out.println("wadaw");
-                            System.out.println(objNota);
-                            System.out.println("");
-                        }
+            // for-loop untuk mencetak semua nota dari user
+            for (Nota objNota: loginMember.getNotaList()) {
+                if (loginMember.getId().equals(objNota.getMember().getId())) {
+                    if (objNota == loginMember.getNotaList()[loginMember.getNotaList().length-1]){
+                        System.out.println(objNota);
+                        continue;
                     }
-                    // System.out.println("");
-                // `}
-            // }
+                    System.out.println(objNota);
+                    System.out.println("");
+                }
+            }
         }
 
         else if (choice == 3) {
@@ -107,7 +105,9 @@ public class MemberSystem extends SystemCLI {
         memberList = memberListTemp.toArray(new Member[memberListTemp.size()]);
     }
 
-    // perlu dibenerin!! jamal
+    /*
+     * Method untuk mendapatkan input paket apa yang dipilih user
+     */
     public static String getPaket(Scanner in) {
         String paket = "";
         System.out.println("Masukan paket laundry:");
@@ -123,7 +123,7 @@ public class MemberSystem extends SystemCLI {
 
             if (NotaGenerator.toHargaPaket(paket) < 0) {
                 System.out.printf("Paket %s tidak diketahui\n", paket);
-                // System.out.println("[ketik ? untuk mencari tahu jenis paket]");
+                System.out.println("[ketik ? untuk mencari tahu jenis paket]");
             } else {
                 break;
             }

@@ -32,21 +32,17 @@ public class EmployeeSystem extends SystemCLI {
         if (choice == 1){
             System.out.printf("Stand back! %s beginning to nyuci!", loginMember.getNama());
             System.out.println("");
+            // for-loop untuk menjalankan method kerjakan() pada semua nota yang ada
             for (Nota objNota: NotaManager.notaList) {
-                // if (objNota.isDone() == true) {
-                //     System.out.println();
-                //     break;
-                // }
                 System.out.println(objNota.kerjakan());
             }
-            // System.out.println("");
         }
 
         else if (choice == 2) {
+            // for-loop untuk mendapatkan status dari semua nota yang ada
             for (Nota objNota: NotaManager.notaList) {
                 System.out.println(objNota.getNotaStatus());
             }
-            // System.out.println("");
         }
 
         else if (choice == 3) {
