@@ -84,6 +84,24 @@ public class MainFrame extends JFrame{
      * */
     public void navigateTo(String page){
         // TODO
+        if(page.equalsIgnoreCase("HomeGUI")) {
+            cards.show(mainPanel, HomeGUI.KEY);
+        }
+        else if(page.equalsIgnoreCase("LoginGUI")) {
+            cards.show(mainPanel, LoginGUI.KEY);
+        }
+        else if(page.equalsIgnoreCase("RegisterGUI")) {
+            cards.show(mainPanel, RegisterGUI.KEY);
+        }
+        else if(page.equalsIgnoreCase("CreateNotaGUI")) {
+            cards.show(mainPanel, CreateNotaGUI.KEY);
+        }
+        else if(page.equalsIgnoreCase("EmployeeSystemGUI")) {
+            cards.show(mainPanel, EmployeeSystemGUI.KEY);
+        }
+        else if(page.equalsIgnoreCase("MemberSystemGUI")) {
+            cards.show(mainPanel, MemberSystemGUI.KEY);
+        }
     }
 
     /**
@@ -97,8 +115,12 @@ public class MainFrame extends JFrame{
      * @return boolean yang menandakan apakah login berhasil atau gagal.
      * */
     public boolean login(String id, String password){
-        for (Loginable panel:
-                loginablePanel) {
+        for (Loginable panel: loginablePanel) {
+            if (memberSystem.isMemberExist(id)) {
+                navigateTo("MemberSystemGUI");
+                return panel.login(id, password);
+            }
+            navigateTo("EmployeeSystemGUI");
             // TODO
         }
         return false;
@@ -109,8 +131,7 @@ public class MainFrame extends JFrame{
      * Method untuk logout dari sistem, kemudian menampilkan halaman Home.
      * */
     public void logout(){
-        for (Loginable panel:
-                loginablePanel) {
+        for (Loginable panel: loginablePanel) {
             panel.logout();
         }
         navigateTo(HomeGUI.KEY);

@@ -2,7 +2,7 @@ package assignments.assignment4.gui.member.employee;
 
 import assignments.assignment3.nota.Nota;
 import assignments.assignment3.nota.NotaManager;
-
+import assignments.assignment3.user.menu.EmployeeSystem;
 import assignments.assignment3.user.menu.SystemCLI;
 import assignments.assignment4.gui.member.AbstractMemberGUI;
 
@@ -32,6 +32,8 @@ public class EmployeeSystemGUI extends AbstractMemberGUI {
     protected JButton[] createButtons() {
         // TODO
         return new JButton[]{
+            new JButton("It's Nyuci Time"),
+            new JButton("Display List Nota"),
         };
     }
 
@@ -55,6 +57,7 @@ public class EmployeeSystemGUI extends AbstractMemberGUI {
      * */
     private void displayNota() {
         // TODO
+        JOptionPane.showMessageDialog(null, EmployeeSystem.displayNota(), "Detail Nota", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**
@@ -62,6 +65,8 @@ public class EmployeeSystemGUI extends AbstractMemberGUI {
      * Akan dipanggil jika pengguna menekan button kedua pada createButtons
      * */
     private void cuci() {
+        JOptionPane.showMessageDialog(null,String.format("Stand back! %s beginning to nyuci!", loggedInMember.getNama()), "Nyuci Time", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, EmployeeSystem.cuci(), "Nyuci Results", JOptionPane.INFORMATION_MESSAGE);
         // TODO
     }
 }

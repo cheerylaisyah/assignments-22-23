@@ -38,6 +38,32 @@ public class LoginGUI extends JPanel {
      * Be creative and have fun!
      * */
     private void initGUI() {
+        idLabel = new JLabel("Masukkan ID Anda:");
+        idTextField = new JTextField();
+        idTextField.setColumns(73);
+
+        passwordLabel = new JLabel("Masukkan password Anda:");
+        passwordField = new JPasswordField();
+        passwordField.setColumns(73);
+
+        loginButton = new JButton("Login");
+        backButton = new JButton("Kembali");
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(20,0,20,0);
+        mainPanel.add(idLabel, gbc);
+        mainPanel.add(idTextField, gbc);
+        mainPanel.add(passwordLabel, gbc);
+        mainPanel.add(passwordField, gbc);
+
+        gbc.fill = GridBagConstraints.CENTER;
+        mainPanel.add(loginButton, gbc);
+        mainPanel.add(backButton, gbc);
+
+        loginButton.addActionListener(e -> handleLogin());
+        backButton.addActionListener(e -> handleBack());
         // TODO
     }
 
@@ -46,6 +72,7 @@ public class LoginGUI extends JPanel {
      * Akan dipanggil jika pengguna menekan "backButton"
      * */
     private void handleBack() {
+        MainFrame.getInstance().navigateTo("HomeGUI");
     }
 
     /**
@@ -53,6 +80,10 @@ public class LoginGUI extends JPanel {
      * Akan dipanggil jika pengguna menekan "loginButton"
      * */
     private void handleLogin() {
+        String idLogin = idTextField.getText();
+        String passwordLogin = passwordField.getPassword().toString();
+
+        MainFrame.getInstance().login(idLogin, passwordLogin);      
         // TODO
     }
 }

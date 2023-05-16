@@ -1,14 +1,3 @@
-/*
-TP 3
-Nama            : Cheeryl Aisyah Retnowibowo
-NPM             : 2206813706
-Kelas           : DDP2 - D
-Tanggal         : Senin, 17 April 2023
-
-Asisten Dosen   : AYP
-Dosen           : Muhammad Hafizhuddin Hilman, S.Kom., M.Kom., Ph.D.
-*/
-
 package assignments.assignment3;
 
 import assignments.assignment3.nota.NotaManager;
@@ -19,19 +8,14 @@ import assignments.assignment3.user.menu.SystemCLI;
 
 import java.util.Scanner;
 
+//import static assignments.assignment1.NotaGenerator.isNumeric;
 import static assignments.assignment3.nota.NotaManager.cal;
 import static assignments.assignment3.nota.NotaManager.fmt;
 
 public class MainMenu {
-    // Attributes
     private final Scanner in;
     private final LoginManager loginManager;
 
-    /**
-     * Entry point for the CuciCuci System application.
-     *
-     * @param args command line arguments, bisa kalian ignore.
-     */
     public static void main(String[] args) {
         MainMenu mainMenu = new MainMenu(new Scanner(System.in), new LoginManager(new EmployeeSystem(), new MemberSystem()));
         mainMenu.run();
@@ -42,9 +26,6 @@ public class MainMenu {
         this.loginManager = loginManager;
     }
 
-    /**
-     * Menjalankan main menu.
-     */
     public void run() {
         boolean exit = false;
         while (!exit) {
@@ -63,42 +44,27 @@ public class MainMenu {
         in.close();
     }
 
-    /**
-     * Skips ke hari selanjutnya dan mengupdate sistem.
-     */
     private void toNextDay() {
-        // System.out.println("Kamu tidur hari ini... zzz...");
+        System.out.println("Kamu tidur hari ini... zzz...");
         NotaManager.toNextDay();
     }
 
-    /**
-     * Mendaftarkan user pada sistem.
-     */
     void register() {
         System.out.println("Masukan nama Anda: ");
         String nama = in.nextLine();
         System.out.println("Masukan nomor handphone Anda: ");
         String noHp = in.nextLine();
-        while (!isNumeric(noHp)) {
-            System.out.println("Nomor hp hanya menerima digit");
-            noHp = in.nextLine();
-        }
         System.out.println("Masukan password Anda: ");
         String password = in.nextLine();
 
         Member registeredMember = loginManager.register(nama, noHp, password);
         if(registeredMember == null){
-            System.out.printf("User dengan nama %s dan nomor hp %s sudah ada!%n", nama, noHp);
-            System.out.println("");
+            System.out.printf("User dengan nama %s dan nomor hp %s sudah ada!\n", nama, noHp);
             return;
         }
-        System.out.printf("Berhasil membuat user dengan ID %s!%n", registeredMember.getId());
-        System.out.println("");
+        System.out.printf("Berhasil membuat user dengan ID %s!\n", registeredMember.getId());
     }
 
-    /**
-     * Meminta user untuk login dan memulai SystemCLI yang sesuai.
-     */
     private void login() {
         System.out.print("Masukan ID Anda: ");
         String inputId = in.nextLine();
@@ -107,15 +73,13 @@ public class MainMenu {
         SystemCLI systemCLI = loginManager.getSystem(inputId);
         if(systemCLI == null){
             System.out.println("ID atau password invalid.");
-            System.out.println("");
             return;
         }
         systemCLI.login(in, inputId, inputPassword);
     }
 
-    /**
-     * Menampilkan menu
-     */
+
+
     private void displayMenu() {
         System.out.println("Selamat datang di CuciCuci System!");
         System.out.printf("Sekarang tanggal %s\n", fmt.format(cal.getTime()));
@@ -126,14 +90,4 @@ public class MainMenu {
         System.out.print("Apa yang ingin Anda lakukan hari ini? ");
     }
 
-    /*
-     * Method untuk handle bahwa input user harus berupa digit angka
-     */
-    private static boolean isNumeric(String str) {
-        for (char c : str.toCharArray()) {
-            if (!Character.isDigit(c))
-                return false;
-        }
-        return true;
-    }
 }
