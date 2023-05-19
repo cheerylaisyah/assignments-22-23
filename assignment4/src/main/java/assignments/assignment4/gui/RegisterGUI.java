@@ -117,7 +117,7 @@ public class RegisterGUI extends JPanel {
         }
         // conditions untuk validasi nomor HP adalah angka
         else if (!NotaGenerator.isNumeric(nomorHP)) {
-            JOptionPane.showMessageDialog(this, "Nomor handphone harus berisi angka", "Invalid Phone Number", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Nomor handphone harus berisi angka!", "Invalid Phone Number", JOptionPane.ERROR_MESSAGE);
             phoneTextField.setText("");
         }
         else {

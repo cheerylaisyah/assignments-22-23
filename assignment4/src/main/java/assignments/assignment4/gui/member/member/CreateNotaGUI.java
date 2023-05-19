@@ -150,45 +150,53 @@ public class CreateNotaGUI extends JPanel {
      * Akan dipanggil jika pengguna menekan "createNotaButton"
      * */
     private void createNota() {
-        // conditions untuk mengecek validasi berat --> harus berupa angka
-        if (NotaGenerator.isNumeric(beratTextField.getText()) && Integer.parseInt(beratTextField.getText()) > 0) {
-            // mengambil input user
-            String pilihanPaket = (String) paketComboBox.getSelectedItem();
-            int beratLaundry = Integer.parseInt(beratTextField.getText());
+        // conditions untuk mengecek apakah user sudah memasukkan input berat
+        if (!beratTextField.getText().isEmpty()) {
+            // conditions untuk mengecek validasi berat --> harus berupa angka
+            if (NotaGenerator.isNumeric(beratTextField.getText()) && Integer.parseInt(beratTextField.getText()) > 0) {
+                // mengambil input user
+                String pilihanPaket = (String) paketComboBox.getSelectedItem();
+                int beratLaundry = Integer.parseInt(beratTextField.getText());
 
-            // jika berat < 2, akan dihitung sebagai 2 kg
-            if (beratLaundry < 2) {
-                beratLaundry = 2;
-                JOptionPane.showMessageDialog(this, "Cucian kurang dari 2 kg, maka cucian akan dianggap sebagai 2 kg", "Info", JOptionPane.INFORMATION_MESSAGE);
+                // jika berat < 2, akan dihitung sebagai 2 kg
+                if (beratLaundry < 2) {
+                    beratLaundry = 2;
+                    JOptionPane.showMessageDialog(this, "Cucian kurang dari 2 kg, maka cucian akan dianggap sebagai 2 kg", "Info", JOptionPane.INFORMATION_MESSAGE);
+                }
+
+                // membuat object nota baru sesuai input user
+                Nota nota = new Nota(memberSystemGUI.getLoggedInMember(), beratLaundry, pilihanPaket, fmt.format(cal.getTime()));
+
+                // mengambil input user berdasarkan checkbox yang tersedia
+                if (setrikaCheckBox.isSelected()) {
+                    nota.addService(new SetrikaService());
+                }
+                if (antarCheckBox.isSelected()) {
+                    nota.addService(new AntarService());
+                }
+                JOptionPane.showMessageDialog(this, "Nota berhasil dibuat!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+                // add nota baru ke list nota system dan list nota member tersebut
+                NotaManager.addNota(nota);
+                memberSystemGUI.getLoggedInMember().addNota(nota);
+
+                // kembali ke default jika nota berhasil dibuat
+                paketComboBox.setSelectedIndex(0);
+                beratTextField.setText("");
+                setrikaCheckBox.setSelected(false);
+                antarCheckBox.setSelected(false);
             }
-
-            // membuat object nota baru sesuai input user
-            Nota nota = new Nota(memberSystemGUI.getLoggedInMember(), beratLaundry, pilihanPaket, fmt.format(cal.getTime()));
-
-            // mengambil input user berdasarkan checkbox yang tersedia
-            if (setrikaCheckBox.isSelected()) {
-                nota.addService(new SetrikaService());
+            // jika berat bukan berupa angka
+            else {
+                JOptionPane.showMessageDialog(this, "Berat cucian harus berisi angka positif!", "Error", JOptionPane.ERROR_MESSAGE);
+                beratTextField.setText("");
             }
-            if (antarCheckBox.isSelected()) {
-                nota.addService(new AntarService());
-            }
-            JOptionPane.showMessageDialog(this, "Nota berhasil dibuat!", "Success", JOptionPane.INFORMATION_MESSAGE);
-
-            // add nota baru ke list nota system dan list nota member tersebut
-            NotaManager.addNota(nota);
-            memberSystemGUI.getLoggedInMember().addNota(nota);
-
-            // kembali ke default jika nota berhasil dibuat
-            paketComboBox.setSelectedIndex(0);
-            beratTextField.setText("");
-            setrikaCheckBox.setSelected(false);
-            antarCheckBox.setSelected(false);
         }
-        // jika berat bukan berupa angka
+        // jika user belum menginput field berat
         else {
-            JOptionPane.showMessageDialog(this, "Berat cucian harus berisi angka positif!", "Error", JOptionPane.ERROR_MESSAGE);
-            beratTextField.setText("");
+            JOptionPane.showMessageDialog(this, "Field berat tidak boleh kosong!", "Error", JOptionPane.ERROR_MESSAGE);
         }
+        
     }
 
     /**
