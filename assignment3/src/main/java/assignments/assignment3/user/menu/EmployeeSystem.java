@@ -62,11 +62,5 @@ public class EmployeeSystem extends SystemCLI {
         System.arraycopy(employees, 0, result, memberList.length, employees.length);
 
         memberList = result;
-        // int n = memberList.length;
-        // Member[] newarr = new Member[n + 1];
-        // System.arraycopy(memberList, 0, newarr, 0, n);
-
-        // newarr[n] = employee;
-        // memberList = newarr;
     }
 }

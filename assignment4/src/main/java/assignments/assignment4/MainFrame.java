@@ -1,4 +1,17 @@
+/*
+TP 4
+Nama            : Cheeryl Aisyah Retnowibowo
+NPM             : 2206813706
+Kelas           : DDP2 - D
+Tanggal         : Jumat, 19 Mei 2023
+
+Asisten Dosen   : AYP
+Dosen           : Muhammad Hafizhuddin Hilman, S.Kom., M.Kom., Ph.D.
+*/
+
+// import class dan library yang dibutuhkan
 package assignments.assignment4;
+
 import assignments.assignment3.LoginManager;
 import assignments.assignment3.user.Employee;
 import assignments.assignment3.user.menu.EmployeeSystem;
@@ -14,8 +27,8 @@ import assignments.assignment4.gui.member.member.MemberSystemGUI;
 import javax.swing.*;
 import java.awt.*;
 
-
 public class MainFrame extends JFrame{
+    // attributes
     private static MainFrame instance;
     private final Loginable[] loginablePanel;
     private final MemberSystem memberSystem = new MemberSystem();
@@ -30,24 +43,30 @@ public class MainFrame extends JFrame{
     private final MemberSystemGUI memberSystemGUI = new MemberSystemGUI(memberSystem);
     private final CreateNotaGUI createNotaGUI = new CreateNotaGUI(memberSystemGUI);
 
+    // constructor
     private MainFrame(){
         super("CuciCuciSystem");
-//        TODO: uncomment code dibawah ini setelah kamu implmentasikan addEmployee pada EmployeeSystem.
-//        // for context dari 2 employee baru ini : https://ristek.link/karyawan-baru-cucicuci
+        // add new employees ke sistem
         employeeSystem.addEmployee(new Employee[]{
                new Employee("delta Epsilon Huha Huha", "ImplicitDiff"),
                new Employee("Regret", "FansBeratKanaArima"),
-               new Employee("cheeryl", "cerilce")
+               new Employee("Cheeryl", "cerilce")
         });
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(700, 432);
-        setVisible(true);
+        
+        // setup frame
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);                                     // menutup frame jika tombol "x" di klik
+        setSize(700, 432);                                                                  // mengatur size frame
+        setLocationRelativeTo(null);                                                        // menampilkan frame di tengah layar
+        setVisible(true);                                                                   // menampilkan frame
+
+        // inisiasi array loginablePanel
         loginablePanel = new Loginable[]{
-                employeeSystemGUI,
-                memberSystemGUI,
+            employeeSystemGUI,
+            memberSystemGUI,
         };
+
         initGUI();
-        cards.show(mainPanel, HomeGUI.KEY);
+        cards.show(mainPanel, HomeGUI.KEY);                                                 // cards digunakan untuk memunculkan komponen yang diinginkan
         add(mainPanel);
     }
 
@@ -84,7 +103,6 @@ public class MainFrame extends JFrame{
      * @param page -> key dari halaman yang diinginkan.
      * */
     public void navigateTo(String page){
-        // TODO
         if(page.equalsIgnoreCase("HomeGUI")) {
             cards.show(mainPanel, HomeGUI.KEY);
         }
@@ -116,17 +134,20 @@ public class MainFrame extends JFrame{
      * @return boolean yang menandakan apakah login berhasil atau gagal.
      * */
     public boolean login(String id, String password){
+        // iterasi setiap panel yang dapat login (panel member dan panel employee)
         for (Loginable panel: loginablePanel) {
+            // pengecekan apakah user termasuk member/employee
             if (panel.login(id, password)) {
                 if (panel.getPageName().equals("MEMBER")) {
-                    navigateTo("MemberSystemGUI");
+                    navigateTo("MemberSystemGUI");                                             
                 }
                 else if (panel.getPageName().equals("EMPLOYEE")) {
-                    navigateTo("EmployeeSystemGUI");
+                    navigateTo("EmployeeSystemGUI");                                         
                 }
                 return true;
             }
         }
+        // jika tidak termasuk dalam member dan employee, maka login gagal
         return false;
     }
 
@@ -135,10 +156,11 @@ public class MainFrame extends JFrame{
      * Method untuk logout dari sistem, kemudian menampilkan halaman Home.
      * */
     public void logout(){
+        // iterasi setiap panel yang dapat logout (panel member dan panel employee)
         for (Loginable panel: loginablePanel) {
             panel.logout();
         }
-        navigateTo("HomeGUI");
+        navigateTo("HomeGUI");                                                               
     }
 
     public static void main(String[] args) {

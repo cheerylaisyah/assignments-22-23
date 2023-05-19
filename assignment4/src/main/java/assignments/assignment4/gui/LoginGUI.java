@@ -1,3 +1,4 @@
+// import class dan library yang dibutuhkan
 package assignments.assignment4.gui;
 
 import assignments.assignment3.LoginManager;
@@ -10,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class LoginGUI extends JPanel {
+    // attributes
     public static final String KEY = "LOGIN";
     private JPanel mainPanel;
     private JLabel idLabel;
@@ -20,13 +22,16 @@ public class LoginGUI extends JPanel {
     private JButton backButton;
     private LoginManager loginManager;
 
+    // constructor
     public LoginGUI(LoginManager loginManager) {
-        super(new BorderLayout()); // Setup layout, Feel free to make any changes
+        // setup layour
+        super(new BorderLayout());
         this.loginManager = loginManager;
 
-        // Set up main panel, Feel free to make any changes
+        // set up main panel
         mainPanel = new JPanel(new GridBagLayout());
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));           // set padding panel
+        mainPanel.setBackground(new Color(201, 228, 222));                              // set warna background panel
 
         initGUI();
 
@@ -39,17 +44,22 @@ public class LoginGUI extends JPanel {
      * Be creative and have fun!
      * */
     private void initGUI() {
+        // pembuatan label, textfield, dan button
         idLabel = new JLabel("Masukkan ID Anda:");
-        idTextField = new JTextField();
-        idTextField.setColumns(73);
+        idTextField = new JTextField(73);
 
         passwordLabel = new JLabel("Masukkan password Anda:");
-        passwordField = new JPasswordField();
-        passwordField.setColumns(73);
+        passwordField = new JPasswordField(73);
 
         loginButton = new JButton("Login");
-        backButton = new JButton("Kembali");
+        loginButton.setForeground(Color.BLACK);
+        loginButton.setBackground(new Color(255, 255, 255));
 
+        backButton = new JButton("Kembali");
+        backButton.setForeground(Color.BLACK);
+        backButton.setBackground(new Color(255, 255, 255));
+
+        // pengaturan posisi label, textfield, dan button, serta insert ke main panel
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -63,9 +73,9 @@ public class LoginGUI extends JPanel {
         mainPanel.add(loginButton, gbc);
         mainPanel.add(backButton, gbc);
 
+        // jika button di klik, maka akan menjalankan method yang telah ditentukan
         loginButton.addActionListener(e -> handleLogin());
         backButton.addActionListener(e -> handleBack());
-        // TODO
     }
 
     /**
@@ -73,8 +83,11 @@ public class LoginGUI extends JPanel {
      * Akan dipanggil jika pengguna menekan "backButton"
      * */
     private void handleBack() {
+        // mengosongkan field
         idTextField.setText("");
         passwordField.setText("");
+
+        // menampilkan halaman HomeGUI
         MainFrame.getInstance().navigateTo("HomeGUI");
     }
 
@@ -83,23 +96,26 @@ public class LoginGUI extends JPanel {
      * Akan dipanggil jika pengguna menekan "loginButton"
      * */
     private void handleLogin() {
+        // pengambilan input user
         String idLogin = idTextField.getText();
         char[] password = passwordField.getPassword();
         String passwordLogin = new String(password);
 
         SystemCLI systemCLI = loginManager.getSystem(idLogin);
-        if(systemCLI == null) {
-            JOptionPane.showMessageDialog(this, "ID atau password invalid.", "Error", JOptionPane.ERROR_MESSAGE);
+        
+        // mengecek apakah id terdapat dalam system
+        if (systemCLI == null) {
+            JOptionPane.showMessageDialog(this, "ID atau password invalid.", "Invalid ID or Password", JOptionPane.ERROR_MESSAGE);
             idTextField.setText("");
             passwordField.setText("");
         }
         else {
+            // mengecek apakah id dan passowrd sesuai dengan data yang terdaftar
             if (!MainFrame.getInstance().login(idLogin, passwordLogin)) {
-                JOptionPane.showMessageDialog(this, "ID atau password invalid.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "ID atau password invalid.", "Invalid ID or Password", JOptionPane.ERROR_MESSAGE);
             }
             idTextField.setText("");
             passwordField.setText("");
         }     
-        // TODO
     }
 }

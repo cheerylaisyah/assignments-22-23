@@ -1,3 +1,4 @@
+// import class dan library yang dibutuhkan
 package assignments.assignment4.gui;
 
 import assignments.assignment1.NotaGenerator;
@@ -11,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class RegisterGUI extends JPanel {
+    // attributes
     public static final String KEY = "REGISTER";
     private JPanel mainPanel;
     private JLabel nameLabel;
@@ -23,13 +25,16 @@ public class RegisterGUI extends JPanel {
     private LoginManager loginManager;
     private JButton backButton;
 
+    // constructor
     public RegisterGUI(LoginManager loginManager) {
-        super(new BorderLayout()); // Setup layout, Feel free to make any changes
+        // set up layout
+        super(new BorderLayout());
         this.loginManager = loginManager;
 
-        // Set up main panel, Feel free to make any changes
+        // set up main panel
         mainPanel = new JPanel(new GridBagLayout());
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));       // set padding panel
+        mainPanel.setBackground(new Color(201, 228, 222));                          // set warna background panel
 
         initGUI();
 
@@ -42,21 +47,25 @@ public class RegisterGUI extends JPanel {
      * Be creative and have fun!
      * */
     private void initGUI() {
+        // pembuatan label, textfield, dan button
         nameLabel = new JLabel("Masukkan nama Anda:");
-        nameTextField = new JTextField();
-        nameTextField.setColumns(73);
+        nameTextField = new JTextField(73);                                          
 
         phoneLabel = new JLabel("Masukkan nomor handphone Anda:");
-        phoneTextField = new JTextField();
-        phoneTextField.setColumns(73);
+        phoneTextField = new JTextField(73);
 
         passwordLabel = new JLabel("Masukkan password Anda:");
-        passwordField = new JPasswordField();
-        passwordField.setColumns(73);
+        passwordField = new JPasswordField(73);
 
         registerButton = new JButton("Register");
-        backButton = new JButton("Kembali");
+        registerButton.setForeground(Color.BLACK);                                  // set warna font button
+        registerButton.setBackground(new Color(255, 255, 255));                     // set warna background button
 
+        backButton = new JButton("Kembali");
+        backButton.setForeground(Color.BLACK);
+        backButton.setBackground(new Color(255, 255, 255));
+
+        // pengaturan posisi label, textfield, dan button, serta insert ke main panel
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -72,6 +81,7 @@ public class RegisterGUI extends JPanel {
         mainPanel.add(registerButton, gbc);
         mainPanel.add(backButton, gbc);
 
+        // jika button di klik, maka akan menjalankan method yang telah ditentukan
         registerButton.addActionListener(e -> handleRegister());
         backButton.addActionListener(e -> handleBack());
     }
@@ -81,9 +91,12 @@ public class RegisterGUI extends JPanel {
      * Akan dipanggil jika pengguna menekan "backButton"
      * */
     private void handleBack() {
+        // mengosongkan field
         nameTextField.setText("");
         phoneTextField.setText("");
         passwordField.setText("");
+
+        // menampilkan halaman HomeGUI
         MainFrame.getInstance().navigateTo("HomeGUI");
     }
 
@@ -92,29 +105,37 @@ public class RegisterGUI extends JPanel {
     * Akan dipanggil jika pengguna menekan "registerButton"
     * */
     private void handleRegister() {
+        // pengambilan input user
         String name = nameTextField.getText();
         String nomorHP = phoneTextField.getText();
         char[] passwordChar = passwordField.getPassword();
         String password = new String(passwordChar);
 
+        // conditions untuk validasi semua field terisi
         if (name.equals("") || nomorHP.equals("") || password.equals("")) {
-            JOptionPane.showMessageDialog(this, "Field tidak boleh kosong", "Empty Field", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Field tidak boleh kosong", "Empty Field", JOptionPane.ERROR_MESSAGE);
         }
+        // conditions untuk validasi nomor HP adalah angka
         else if (!NotaGenerator.isNumeric(nomorHP)) {
-            JOptionPane.showMessageDialog(this, "Nomor hp hanya menerima digit", "Invalid Phone Number", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Nomor handphone harus berisi angka", "Invalid Phone Number", JOptionPane.ERROR_MESSAGE);
             phoneTextField.setText("");
         }
         else {
+            // pembuatan object Member baru sesuai dengan input user
             Member registeredMember = loginManager.register(name, nomorHP, password);
-            if(registeredMember == null){
-                JOptionPane.showMessageDialog(this, String.format("User dengan nama %s dan nomor hp %s sudah ada!\n", name, nomorHP), "Registration Failed", JOptionPane.INFORMATION_MESSAGE);
+            // conditions untuk validasi tidak ada duplikasi user
+            if(registeredMember == null) {
+                JOptionPane.showMessageDialog(this, String.format("User dengan nama %s dan nomor hp %s sudah ada!\n", name, nomorHP), "Registration Failed", JOptionPane.ERROR_MESSAGE);
                 handleBack();
             }
-            else{
-                JOptionPane.showMessageDialog(this, String.format("Berhasil membuat user dengan ID %s!\n", registeredMember.getId()), "Registration Success", JOptionPane.INFORMATION_MESSAGE);
+            else {
+                JTextArea confirmationRegistration = new JTextArea();
+                confirmationRegistration.setEditable(false);
+                confirmationRegistration.setBackground(new Color(238,238,238,255));
+                confirmationRegistration.setText("Berhasil membuat user dengan ID " + registeredMember.getId());
+                JOptionPane.showMessageDialog(this, confirmationRegistration, "Registration Successful", JOptionPane.INFORMATION_MESSAGE);
                 handleBack();
             }
         }
-        // TODO
     }
 }
