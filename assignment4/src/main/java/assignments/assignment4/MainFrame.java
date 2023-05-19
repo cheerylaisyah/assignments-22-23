@@ -34,10 +34,11 @@ public class MainFrame extends JFrame{
         super("CuciCuciSystem");
 //        TODO: uncomment code dibawah ini setelah kamu implmentasikan addEmployee pada EmployeeSystem.
 //        // for context dari 2 employee baru ini : https://ristek.link/karyawan-baru-cucicuci
-//        employeeSystem.addEmployee(new Employee[]{
-//                new Employee("delta Epsilon Huha Huha", "ImplicitDiff"),
-//                new Employee("Regret", "FansBeratKanaArima")
-//        });
+        employeeSystem.addEmployee(new Employee[]{
+               new Employee("delta Epsilon Huha Huha", "ImplicitDiff"),
+               new Employee("Regret", "FansBeratKanaArima"),
+               new Employee("cheeryl", "cerilce")
+        });
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(700, 432);
         setVisible(true);
@@ -116,12 +117,15 @@ public class MainFrame extends JFrame{
      * */
     public boolean login(String id, String password){
         for (Loginable panel: loginablePanel) {
-            if (memberSystem.isMemberExist(id)) {
-                navigateTo("MemberSystemGUI");
-                return panel.login(id, password);
+            if (panel.login(id, password)) {
+                if (panel.getPageName().equals("MEMBER")) {
+                    navigateTo("MemberSystemGUI");
+                }
+                else if (panel.getPageName().equals("EMPLOYEE")) {
+                    navigateTo("EmployeeSystemGUI");
+                }
+                return true;
             }
-            navigateTo("EmployeeSystemGUI");
-            // TODO
         }
         return false;
     }
@@ -134,7 +138,7 @@ public class MainFrame extends JFrame{
         for (Loginable panel: loginablePanel) {
             panel.logout();
         }
-        navigateTo(HomeGUI.KEY);
+        navigateTo("HomeGUI");
     }
 
     public static void main(String[] args) {

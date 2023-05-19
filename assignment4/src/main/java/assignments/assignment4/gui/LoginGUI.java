@@ -2,6 +2,7 @@ package assignments.assignment4.gui;
 
 import assignments.assignment3.LoginManager;
 import assignments.assignment4.MainFrame;
+import assignments.assignment3.user.menu.SystemCLI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -72,6 +73,8 @@ public class LoginGUI extends JPanel {
      * Akan dipanggil jika pengguna menekan "backButton"
      * */
     private void handleBack() {
+        idTextField.setText("");
+        passwordField.setText("");
         MainFrame.getInstance().navigateTo("HomeGUI");
     }
 
@@ -81,9 +84,22 @@ public class LoginGUI extends JPanel {
      * */
     private void handleLogin() {
         String idLogin = idTextField.getText();
-        String passwordLogin = passwordField.getPassword().toString();
+        char[] password = passwordField.getPassword();
+        String passwordLogin = new String(password);
 
-        MainFrame.getInstance().login(idLogin, passwordLogin);      
+        SystemCLI systemCLI = loginManager.getSystem(idLogin);
+        if(systemCLI == null) {
+            JOptionPane.showMessageDialog(this, "ID atau password invalid.", "Error", JOptionPane.ERROR_MESSAGE);
+            idTextField.setText("");
+            passwordField.setText("");
+        }
+        else {
+            if (!MainFrame.getInstance().login(idLogin, passwordLogin)) {
+                JOptionPane.showMessageDialog(this, "ID atau password invalid.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            idTextField.setText("");
+            passwordField.setText("");
+        }     
         // TODO
     }
 }

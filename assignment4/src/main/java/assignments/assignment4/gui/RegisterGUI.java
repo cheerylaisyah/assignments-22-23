@@ -74,7 +74,6 @@ public class RegisterGUI extends JPanel {
 
         registerButton.addActionListener(e -> handleRegister());
         backButton.addActionListener(e -> handleBack());
-        // TODO
     }
 
     /**
@@ -82,6 +81,9 @@ public class RegisterGUI extends JPanel {
      * Akan dipanggil jika pengguna menekan "backButton"
      * */
     private void handleBack() {
+        nameTextField.setText("");
+        phoneTextField.setText("");
+        passwordField.setText("");
         MainFrame.getInstance().navigateTo("HomeGUI");
     }
 
@@ -92,20 +94,25 @@ public class RegisterGUI extends JPanel {
     private void handleRegister() {
         String name = nameTextField.getText();
         String nomorHP = phoneTextField.getText();
-        String password = passwordField.getPassword().toString();
+        char[] passwordChar = passwordField.getPassword();
+        String password = new String(passwordChar);
+
         if (name.equals("") || nomorHP.equals("") || password.equals("")) {
-            JOptionPane.showMessageDialog(null, "Field tidak boleh kosong", "Empty Field", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Field tidak boleh kosong", "Empty Field", JOptionPane.INFORMATION_MESSAGE);
         }
         else if (!NotaGenerator.isNumeric(nomorHP)) {
-            JOptionPane.showMessageDialog(null, "Nomor hp hanya menerima digit", "Invalid Phone Number", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Nomor hp hanya menerima digit", "Invalid Phone Number", JOptionPane.INFORMATION_MESSAGE);
+            phoneTextField.setText("");
         }
         else {
             Member registeredMember = loginManager.register(name, nomorHP, password);
             if(registeredMember == null){
-                JOptionPane.showMessageDialog(null, String.format("User dengan nama %s dan nomor hp %s sudah ada!\n", name, nomorHP), "Registration Failed", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, String.format("User dengan nama %s dan nomor hp %s sudah ada!\n", name, nomorHP), "Registration Failed", JOptionPane.INFORMATION_MESSAGE);
+                handleBack();
             }
             else{
-                JOptionPane.showMessageDialog(null, String.format("Berhasil membuat user dengan ID %s!\n", registeredMember.getId()), "Registration Failed", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, String.format("Berhasil membuat user dengan ID %s!\n", registeredMember.getId()), "Registration Success", JOptionPane.INFORMATION_MESSAGE);
+                handleBack();
             }
         }
         // TODO
